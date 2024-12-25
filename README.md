@@ -12,7 +12,7 @@
 <b>이 문제를 해결하기 위해 내가 제출한 코드와 유사하게 풀어나간 정답코드를 유사도분석을 통해 추천하는 서비스를 기획하였습니다.</b><br><br>
 
 # ⚙️ 서비스 아키텍처
-![image](https://github.com/user-attachments/assets/e7e825ff-2877-4a18-97a6-7625ee2a914e)
+![image](https://github.com/user-attachments/assets/a353ab0c-ca97-46cf-968c-2313670ab9cc)
 
 # 🔎 핵심 기능 소개
 ### 1️⃣ 유사 코드 추천<br>
@@ -38,7 +38,7 @@
 ![image](https://github.com/user-attachments/assets/e23447b7-f896-421a-aa74-adc837198862)
 
 # ✔️ 데모 영상
-https://github.com/user-attachments/assets/038abcb1-5055-4686-85fb-c6be44aa4b1d
+https://github.com/user-attachments/assets/ce9dae5d-a2d9-429a-a231-39c73dd64977
 
 # ✔️ 결론
 • 많은 코딩 테스트 준비생들은 문제 풀이 과정을 통해 자신만의 알고리즘 접근법을 개발하고자 합니다.<br>
