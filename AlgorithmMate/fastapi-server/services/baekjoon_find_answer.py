@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import base64
+from dotenv import load_dotenv
 from language_options import determine_baekjoon_language
 
 def search_github_commits(query, token):
@@ -93,6 +94,7 @@ def main(query, token):
 if __name__ == "__main__":
     # GitHub Personal Access Token
     # Test
-    token = "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"  # 여기에 생성한 토큰을 입력하세요.
+    load_dotenv()
+    token = os.getenv("API_TOKEN")
     query = "[Gold IV] Title: 고층 건물"
     main(query, token)
