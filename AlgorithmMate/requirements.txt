@@ -1,0 +1,7 @@
+bs4
+fastapi
+uvicorn
+requests
+selenium
+python-dotenv
+watchdog

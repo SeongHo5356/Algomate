@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Matches for solution_9.cpp & solution_10.cpp</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</HEAD>
+<body>
+  <div style="align-items: center; display: flex; justify-content: space-around;">
+    <div>
+      <h3 align="center">
+Matches for solution_9.cpp & solution_10.cpp
+      </h3>
+      <h1 align="center">
+        17.3%
+      </h1>
+      <center>
+        <a href="index.html" target="_top">
+          INDEX
+        </a>
+        <span>-</span>
+        <a href="help-en.html" target="_top">
+          HELP
+        </a>
+      </center>
+    </div>
+    <div>
+<TABLE BORDER="1" CELLSPACING="0" BGCOLOR="#d0d0d0">
+<TR><TH><TH>solution_9.cpp (19.67213%)<TH>solution_10.cpp (15.584415%)<TH>Tokens
+<TR><TD BGCOLOR="#0000ff"><FONT COLOR="#0000ff">-</FONT><TD><A HREF="javascript:ZweiFrames('match9-0.html#0',2,'match9-1.html#0',3)" NAME="0">(22-24)<TD><A HREF="javascript:ZweiFrames('match9-0.html#0',2,'match9-1.html#0',3)" NAME="0">(24-26)</A><TD ALIGN=center><FONT COLOR="#ff0000">12</FONT>
+</TABLE>
+    </div>
+  </div>
+  <hr>
+  <div style="display: flex;">
+<div style="flex-grow: 1;">
+<h3>
+<center>
+<span>solution_9.cpp</span>
+<span> - </span>
+<span></span>
+</center>
+</h3>
+<HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main(){
+	int n; scanf(&quot;%d&quot;,&amp;n);
+	vector&lt;int&gt; start;
+	vector&lt;int&gt; end;
+	int lower=-999999; int lowerx=1;
+	int upper=999999; int upperx=1;
+	for(int i=0;i&lt;n;i++){
+		int x; scanf(&quot;%d&quot;,&amp;x);
+		if(i&gt;0){
+			if(x&lt;start.back()){
+				printf(&quot;fail&quot;); return 0;
+			}
+		}
+<A NAME="0"></A>		start.push_back(x);
+		end.push_back(x+1);
+	}
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match9-1.html#0',3,'match9-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	for(int i=1;i&lt;n;i++){
+		for(int j=0;j&lt;i;j++){
+			int x=start[i]-end[j];</B></FONT>
+			int y=end[i]-start[j];
+			int z=i-j;
+			//printf(&quot;%d &lt; %db &lt; %d\n&quot;,x,z,y);
+			if(lower*z&lt;x*lowerx){
+				lower=x; lowerx=z;
+				//printf(&quot;lower: %d / %d\n&quot;,x,z);
+			}
+			if(upper*z&gt;y*upperx){
+				upper=y; upperx=z;
+				//printf(&quot;upper: %d / %d\n&quot;,y,z);
+			}
+		}
+	}
+	if(lower*upperx&gt;upper*lowerx){
+		printf(&quot;fail&quot;);	
+	}else printf(&quot;pass&quot;);
+	
+	return 0;
+}
+</PRE>
+</div>
+<div style="flex-grow: 1;">
+<h3>
+<center>
+<span>solution_10.cpp</span>
+<span> - </span>
+<span></span>
+</center>
+</h3>
+<HR>
+<PRE>
+#include &lt;iostream&gt;
+#define MAXN 102
+
+using namespace std;
+
+bool good_line(int n, int beta[MAXN], int x0, int dx, int dy){
+    for(int x = 0; x &lt; n; ++x){
+        if(x &lt; x0){
+            int y = beta[x0] - (dy * (x0 - x) + dx - 1) / dx;
+            if(y != beta[x]){
+                return false;
+            }
+        }else if(x &gt; x0){
+            int y = beta[x0] + (dy * (x - x0) - 1) / dx;
+            if(y != beta[x]){
+                return false;
+            }
+        }
+    }
+    return true;
+<A NAME="0"></A>}
+
+bool any_good_line(int n, int beta[MAXN]){
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match9-0.html#0',2,'match9-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    for(int i = 0; i &lt; n; ++i){
+        for(int j = i + 1; j &lt; n; ++j){
+            int dx = j - i, dy = beta[j] + 1 - beta[i];</B></FONT>
+            if(dy &gt; 0 &amp;&amp; good_line(n, beta, i, dx, dy)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    cin &gt;&gt; n;
+    int beta[MAXN];
+    for(int i = 0; i &lt; n; ++i){
+        cin &gt;&gt; beta[i];
+    }
+    if(any_good_line(n, beta)){
+        cout &lt;&lt; &quot;pass\n&quot;;
+    }else{
+        cout &lt;&lt; &quot;fail\n&quot;;
+    }
+    return 0;
+}
+</PRE>
+</div>
+  </div>
+</body>
+</html>

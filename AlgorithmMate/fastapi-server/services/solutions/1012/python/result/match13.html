@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Matches for zn7034.py & luckydog.py</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</HEAD>
+<body>
+  <div style="align-items: center; display: flex; justify-content: space-around;">
+    <div>
+      <h3 align="center">
+Matches for zn7034.py & luckydog.py
+      </h3>
+      <h1 align="center">
+        82.7%
+      </h1>
+      <center>
+        <a href="index.html" target="_top">
+          INDEX
+        </a>
+        <span>-</span>
+        <a href="help-en.html" target="_top">
+          HELP
+        </a>
+      </center>
+    </div>
+    <div>
+<TABLE BORDER="1" CELLSPACING="0" BGCOLOR="#d0d0d0">
+<TR><TH><TH>zn7034.py (84.81013%)<TH>luckydog.py (80.72289%)<TH>Tokens
+<TR><TD BGCOLOR="#0000ff"><FONT COLOR="#0000ff">-</FONT><TD><A HREF="javascript:ZweiFrames('match13-0.html#0',2,'match13-1.html#0',3)" NAME="0">(9-34)<TD><A HREF="javascript:ZweiFrames('match13-0.html#0',2,'match13-1.html#0',3)" NAME="0">(8-37)</A><TD ALIGN=center><FONT COLOR="#ff0000">67</FONT>
+</TABLE>
+    </div>
+  </div>
+  <hr>
+  <div style="display: flex;">
+<div style="flex-grow: 1;">
+<h3>
+<center>
+<span>zn7034.py</span>
+<span> - </span>
+<span></span>
+</center>
+</h3>
+<HR>
+<PRE>
+import sys
+input=sys.stdin.readline
+t=int(input())
+
+dx=[-1,1,0,0]
+<A NAME="0"></A>dy=[0,0,-1,1]
+
+def bfs(x,y):
+    queue<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match13-1.html#0',3,'match13-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>=[(x,y)]
+    graph[x][y]=0
+    while queue:
+        x,y=queue.pop(0)
+        for i in range(4):
+            nx=x+dx[i]
+            ny=y+dy[i]
+            if nx&lt;0 or nx&gt;=m or ny&lt;0 or ny&gt;=n:
+                continue
+            if graph[nx][ny]==1:
+                queue.append((nx,ny))
+                graph[nx][ny]=0
+
+for i in range(t):
+    m,n,k=map(int,input().split())
+    graph=[ [0] * n for _ in range(m)]
+    cnt=0
+    for i in range(k):
+        x,y=map(int,input().split())
+        graph[x][y]=1
+    for a in range(m):
+        for b in range(n):
+            if graph[a][b]==1:
+                bfs(a,b)
+                cnt+=1
+    print(</B></FONT>cnt)
+</PRE>
+</div>
+<div style="flex-grow: 1;">
+<h3>
+<center>
+<span>luckydog.py</span>
+<span> - </span>
+<span></span>
+</center>
+</h3>
+<HR>
+<PRE>
+from sys import stdin
+def input(): return stdin.readline().strip()
+T = int(input())
+def bfs(x,y):
+<A NAME="0"></A>    global M,N,matrix
+    dx = [1,-1,0,0]
+    dy = [0,0,1,-1]
+    l <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#0',2,'match13-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= [(x,y)]
+    matrix[x][y] = 0
+    while l:
+        x,y = l.pop(0)
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if nx &lt; 0 or nx &gt;= M or ny &lt; 0 or ny &gt;= N:
+                continue
+
+            if matrix[nx][ny]:
+                l.append((nx,ny))
+                matrix[nx][ny] = 0
+
+
+for _ in range(T):
+    M,N,K = map(int,input().split())
+    matrix = [[0]*N for _ in range(M)]
+    cnt = 0
+    for _ in range(K):
+        x,y = map(int,input().split())
+        matrix[x][y] = 1
+
+    for a in range(M):
+        for b in range(N):
+            if matrix[a][b]:
+                bfs(a,b)
+                cnt += 1
+    print(</B></FONT>cnt)
+</PRE>
+</div>
+  </div>
+</body>
+</html>

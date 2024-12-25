@@ -1,0 +1,14 @@
+/* 새로운 요소 스타일 */
+#my-new-element {
+  background-color: #f0f0f0;
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+}
+
+/* 기존 요소 스타일 변경 (선택 사항) */
+#connected-components-count {
+  color: blue;
+  font-weight: bold;
+}

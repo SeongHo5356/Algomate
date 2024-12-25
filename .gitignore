@@ -1,0 +1,46 @@
+# 운영 체제 관련 파일
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+
+# 환경 설정 파일
+.env
+.env.local
+.env.*.local
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 빌드 파일
+dist/
+build/
+
+# 에디터/IDE 설정 파일
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 기타
+*.bak
+*.tmp
