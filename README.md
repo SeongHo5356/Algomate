@@ -20,7 +20,7 @@
 • 추천된 코드를 통해 다양한 접근 방식을 학습하고 비교 가능<br>
 ![image](https://github.com/user-attachments/assets/b5499b94-2bc8-4c73-9e7e-c441c049b8c1)
 
-### 2️⃣ 코드 유사도 분<br>
+### 2️⃣ 코드 유사도 분석<br>
 • 추상 구문 트리(Abstract Syntax Tree, AST)를 활용하여 코드의 구조와 알고리즘 흐름 분석<br>
 • 단순한 문자열 비교를 넘어, 실제 풀이 방식의 유사성을 기준으로 유사도를 계산<br>
 ![image](https://github.com/user-attachments/assets/93983a4a-9c1d-4ca7-ace9-331409dfa10c)
