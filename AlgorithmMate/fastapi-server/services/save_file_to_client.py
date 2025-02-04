@@ -1,6 +1,6 @@
 import os
 import shutil
-from services.check_code_similarity import run_jplag
+from check_code_similarity import run_jplag
 
 def save_top_similarity_files(results, base_path, to_clients_path, keyword = "kjeng7897"):
     """
