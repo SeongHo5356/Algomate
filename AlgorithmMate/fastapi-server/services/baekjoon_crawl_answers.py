@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from check_server_solved import check_problem_solved
 from full_process_search_n_submit import f_process
 from language_options import get_file_extention_and_folder
+
+
 # 로그인 함수
 def login(driver, username, password):
     driver.get("https://www.acmicpc.net/login")
@@ -83,7 +85,7 @@ def scrape_solutions(driver, problem_id, language_id, base_save_directory="solut
     base_url = f"https://www.acmicpc.net/problem/status/{problem_id}/{language_id}/"
     max_pages = get_max_pages(driver, base_url)
 
-    ## 정답을 맞춘적 없을 때
+    ## 정답을 맞춘 적 없을 때
     if (check_problem_solved(problem_id) == False):
         print ("정답을 맞춘적 없음")
         f_process(problem_id)
@@ -97,7 +99,8 @@ def scrape_solutions(driver, problem_id, language_id, base_save_directory="solut
         solutions = []  # 메모리에 저장할 리스트
         solution_count = 1
 
-        for page in range(1, max_pages + 1):
+        # for page in range(1, max_pages + 1):
+        for page in range(1,2):
             driver.get(base_url + str(page))
             time.sleep(1)  # 사이트에 과도한 요청을 피하기 위해 잠시 대기
 
@@ -179,7 +182,8 @@ def scrape_solutions(driver, problem_id, language_id, base_save_directory="solut
         solutions = []  # 메모리에 저장할 리스트
         solution_count = 1
 
-        for page in range(1, max_pages + 1):
+        # for page in range(1, max_pages + 1):
+        for page in range(1, 2):
             driver.get(base_url + str(page))
             time.sleep(1)  # 사이트에 과도한 요청을 피하기 위해 잠시 대기
 
@@ -304,10 +308,12 @@ if __name__ == "__main__":
     username = os.getenv("BAEKJOON_USERNAME")
     password = os.getenv("BAEKJOON_PASSWORD")
 
+    print(username)
+    print(password)
     # 로그인
     if login(driver, username, password):
         # 특정 문제와 언어의 정답 코드 가져오기
-        problem_id = "1012" #input("문제번호를 입력해주세요 : ")  # 문제 ID
+        problem_id = "1027" #input("문제번호를 입력해주세요 : ")  # 문제 ID
         language_id = '1003'  # 언어 ID (Python 3)
 
         solutions = scrape_solutions(driver, problem_id, language_id)

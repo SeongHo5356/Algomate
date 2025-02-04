@@ -1,6 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 
+# 서버계정이 이미 백준에서 해당 문제의 정답에 접근 가능한지 알아보는 파일
+# 계정이 정답을 제출한 적 있으면 바로 크롤링 가능
+# 계정이 정답을 제출한 적 없으면, 깃헙에서 정답을 찾아서 제출하고 크롤링 가능
+
 def check_problem_solved(problem_number):
     data = get_all_problems("robot3104")
     # # 전체 리스트 solved, attempt but not solved. .. 모든 리스트에서 탐색

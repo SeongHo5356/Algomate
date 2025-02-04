@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from convert_to_search_format import get_problem_info
 from baekjoon_find_answer import main
 
+# 백준에 정답을 제출하는 코드
 def setup_driver():
     #     options = Options()
     #     options.add_argument("--headless")  # 필요에 따라 주석 처리

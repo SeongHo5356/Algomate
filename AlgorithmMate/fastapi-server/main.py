@@ -193,6 +193,24 @@ def get_modified_files():
     # 현재까지 감지된 변경된 파일 반환
     return {"modified_files": modified_files}
 
+from model.models import SessionLocal
+from model.db_service import add_solution_to_db
+from sqlalchemy.orm import Session
+from fastapi import Depends, FastAPI
+# 의존성 주입
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.post("/solutions")
+async def save_solution(problem_id: str, file_path: str, language:str, user_id: str, db: Session = Depends(get_db)):
+    add_solution_to_db(db, problem_id, file_path, language, user_id)
+    return {"message": "Solution saved successfully"}
+
+
 if __name__ == "__main__":
     # 파일 감지 설정
     directory_to_watch = "./services"

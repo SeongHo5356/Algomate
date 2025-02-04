@@ -6,7 +6,9 @@ import re
 import base64
 from dotenv import load_dotenv
 from language_options import determine_baekjoon_language
+import os
 
+# 깃헙에서 정답을 찾는 함수
 def search_github_commits(query, token):
     """GitHub API를 사용하여 커밋을 검색합니다."""
     url = f"https://api.github.com/search/commits?q={query}"
@@ -97,4 +99,4 @@ if __name__ == "__main__":
     load_dotenv()
     token = os.getenv("API_TOKEN")
     query = "[Gold IV] Title: 고층 건물"
-    main(query, token)
+    print(main(query, token))
