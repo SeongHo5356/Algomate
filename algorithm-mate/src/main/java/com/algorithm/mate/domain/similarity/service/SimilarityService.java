@@ -52,8 +52,55 @@ public class SimilarityService {
             throw new CustomExitException("Error during comparison: " + e.getMessage());
         }
     }
+    public void compareWithBaseFile(String bkId, String problemId, String language ) throws CustomExitException {
+        try{
+//            String baseFilePath = String.format("resources/solutions/%d/base/%s.%s", problemId, bkId, language.toLowerCase());
+            String baseFilePath = String.format("resources/solutions/%d/base/%s.%s", problemId, bkId, "py"); // 이후 변경
+//            String solutionsPath = String.format("resources/solutions/%d/%s", problemId, language.toLowerCase());
+            String solutionsPath = String.format("resources/solutions/%d/%s", problemId, "python"); // 이후 변경
 
-    public void compareWithBaseFile(String baseFilePath, String solutionsPath) throws CustomExitException {
+            // 기준 파일 선택: bkId.language 파일 찾기
+            File baseFile = new File(baseFilePath);
+            if (!baseFile.exists()){
+                throw new CustomExitException("Base file not found: " + baseFilePath);
+            }
+
+            // 임시 디렉토리 생성
+            Path tempDir = createTempDirectory();
+
+            // 기준 파일 복사
+            Path baseFileCopyPath = tempDir.resolve(baseFile.getName());
+            Files.copy(baseFile.toPath(), baseFileCopyPath, StandardCopyOption.REPLACE_EXISTING);
+
+            // 비교할 파일 복사 : solutions/문제번호/language 폴더의 모든 파일
+            copyFilesFromDirectory(solutionsPath, tempDir);
+
+            // JPlag를 사용하여 비교
+            List<JPlagComparison> comparisons = compareSoltions(tempDir.toString());
+
+            // 결과를 데이터베이스에 저장
+            for (JPlagComparison comparison : comparisons) {
+                String baseFileName = baseFile.getName();
+                String comparedFileName1 = comparison.getFirstSubmission().getName();
+                String comparedFileName2 = comparison.getSecondSubmission().getName();
+                double similarity = comparison.similarity();
+
+                // 기준 파일에 대한 비교 결과만 저장
+                if (baseFileName.equals(comparedFileName1)) {
+                    saveComparisonResult(baseFileName, comparedFileName2, similarity, Integer.parseInt(problemId));
+                } else if (baseFileName.equals(comparedFileName2)) {
+                    saveComparisonResult(baseFileName, comparedFileName1, similarity, Integer.parseInt(problemId));
+                }
+            }
+        } catch (CustomExitException e){
+            throw new CustomExitException("Error during comparison: " + e.getMessage());
+        } catch (Exception e){
+            throw new CustomExitException("Unexpected error: "+e.getMessage());
+        }
+    }
+
+    //base폴더 안에 모든 파일과 solutions의 모든 파일을 비교
+    public void compareWithBaseFiles(String baseFilePath, String solutionsPath) throws CustomExitException {
         try {
 
             // 문제 번호 추출
@@ -135,6 +182,7 @@ public class SimilarityService {
         result.setProblemId(problemId);
         similarityRepository.save(result);
     }
+
 
 
 
