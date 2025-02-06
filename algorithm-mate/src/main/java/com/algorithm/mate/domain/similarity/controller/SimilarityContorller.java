@@ -15,15 +15,12 @@ public class SimilarityContorller {
     @Autowired
     private SimilarityService similarityService;
 
-    @GetMapping("/compare")
-    public List<JPlagComparison> compareSolution(@RequestParam String solutionsPath) throws ExitException {
-        return similarityService.compareSoltions(solutionsPath);
-    }
+    @PostMapping("/compare2")
+    public String compareSolutions2(String problemId, String language){
 
-    @PostMapping("/compare")
-    public String compareSolutions(
-            @RequestParam String baseFilePath,
-            @RequestParam String solutionsPath) throws ExitException {
+        String baseFilePath = System.getProperty("user.dir") + "/src/main/resources/solutions/" +problemId+ "/base";
+        String solutionsPath = System.getProperty("user.dir") + "/src/main/resources/solutions/" + problemId + "/" + language;
+
         try{
             similarityService.compareWithBaseFile(baseFilePath, solutionsPath);
             return "Comparison completed and results saved to database.";
@@ -31,4 +28,5 @@ public class SimilarityContorller {
             return "Error during comparison: " + e.getMessage();
         }
     }
+
 }

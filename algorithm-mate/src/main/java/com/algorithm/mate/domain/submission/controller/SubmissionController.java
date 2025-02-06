@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/v1/submission")
 public class SubmissionController {
@@ -34,6 +36,13 @@ public class SubmissionController {
         // 데이터베이스에 저장
         submissionService.saveOrUpdateSubmission(submission);
 
-        return "Code submitted successfully!";
+        // 파일로 저장
+        try{
+            submissionService.saveCodeToFile(request.getProblemId(), request.getLanguage(), request.getBkId(), request.getCode());
+        } catch (IOException e){
+            return "Failed to save code to file: " + e.getMessage();
+        }
+
+        return "Code submitted and saved successfully!";
     }
 }
