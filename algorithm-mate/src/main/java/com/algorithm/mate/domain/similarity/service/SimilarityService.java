@@ -58,26 +58,26 @@ public class SimilarityService {
             String baseFilePath = String.format("resources/solutions/%d/base/%s.%s", problemId, bkId, "py"); // 이후 변경
 //            String solutionsPath = String.format("resources/solutions/%d/%s", problemId, language.toLowerCase());
             String solutionsPath = String.format("resources/solutions/%d/%s", problemId, "python"); // 이후 변경
-
+            log.info("0");
             // 기준 파일 선택: bkId.language 파일 찾기
             File baseFile = new File(baseFilePath);
             if (!baseFile.exists()){
                 throw new CustomExitException("Base file not found: " + baseFilePath);
             }
-
+            log.info("1");
             // 임시 디렉토리 생성
             Path tempDir = createTempDirectory();
-
+            log.info("2");
             // 기준 파일 복사
             Path baseFileCopyPath = tempDir.resolve(baseFile.getName());
             Files.copy(baseFile.toPath(), baseFileCopyPath, StandardCopyOption.REPLACE_EXISTING);
-
+            log.info("3");
             // 비교할 파일 복사 : solutions/문제번호/language 폴더의 모든 파일
             copyFilesFromDirectory(solutionsPath, tempDir);
-
+            log.info("4");
             // JPlag를 사용하여 비교
             List<JPlagComparison> comparisons = compareSoltions(tempDir.toString());
-
+            log.info("5");
             // 결과를 데이터베이스에 저장
             for (JPlagComparison comparison : comparisons) {
                 String baseFileName = baseFile.getName();
