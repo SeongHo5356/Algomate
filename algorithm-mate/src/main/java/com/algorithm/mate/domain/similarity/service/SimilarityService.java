@@ -182,8 +182,4 @@ public class SimilarityService {
         result.setProblemId(problemId);
         similarityRepository.save(result);
     }
-
-
-
-
 }

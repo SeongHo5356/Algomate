@@ -1,30 +1,34 @@
 package com.algorithm.mate.domain.submission.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "submissions")
+@Getter @Setter
 public class Submission {
 
     @Id
     @Column(name = "bk_id")
     private String bkId;
 
-    @Column(name = "problem_id")
+    @Column(name = "problem_id", nullable = false)
     private String problemId;
 
-    @Column(name = "language")
+    @Column(name = "language", nullable = false)
     private String language;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Column(name = "code", columnDefinition = "TEXT")
     private String code;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     // 생성자, getter, setter
     public Submission() {}
@@ -36,53 +40,5 @@ public class Submission {
         this.userId = userId;
         this.code = code;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public String getBkId() {
-        return bkId;
-    }
-
-    public void setBkId(String bkId) {
-        this.bkId = bkId;
-    }
-
-    public String getProblemId() {
-        return problemId;
-    }
-
-    public void setProblemId(String problemId) {
-        this.problemId = problemId;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }

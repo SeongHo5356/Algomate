@@ -1,11 +1,20 @@
 package com.algorithm.mate.domain.similarity.entity;
 
+import com.algorithm.mate.domain.submission.entity.Submission;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "similarities")
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Similarity {
 
     @Id
@@ -13,22 +22,18 @@ public class Similarity {
     @Column(name = "similarity_id")
     private long similarityId;
 
-    @Column(name = "problem_id")
+    @ManyToOne
+    @JoinColumn(name = "bk_id", nullable = false)
+    private Submission submission;
+
+    @Column(name = "problem_id", nullable = false)
     private long problemId;
 
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "language")
+    @Column(name = "language", nullable = false)
     private Language language;
 
-    @Column(name = "submission_id")
+    @Column(name = "submission_id", nullable = false)
     private String submissionId;
 
     @Column(name = "answer_id")
@@ -37,55 +42,6 @@ public class Similarity {
     @Column(name = "similarity_score")
     private double similarityScore;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    // 생성자, getter, setter
-    public long getProblemId() {
-        return problemId;
-    }
-
-    public void setProblemId(long problemId) {
-        this.problemId = problemId;
-    }
-    public long getSimilarityId() {
-        return similarityId;
-    }
-
-    public void setSimilarityId(long similarityId) {
-        this.similarityId = similarityId;
-    }
-
-    public String getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(String answerId) {
-        this.answerId = answerId;
-    }
-
-    public String getSubmissionId() {
-        return submissionId;
-    }
-
-    public void setSubmissionId(String submissionId) {
-        this.submissionId = submissionId;
-    }
-
-    public double getSimilarityScore() {
-        return similarityScore;
-    }
-
-    public void setSimilarityScore(double similarityScore) {
-        this.similarityScore = similarityScore;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
