@@ -4,10 +4,8 @@ import com.algorithm.mate.domain.similarity.exception.CustomExitException;
 import com.algorithm.mate.domain.similarity.service.SimilarityService;
 import com.algorithm.mate.domain.solution.entity.Solution;
 import com.algorithm.mate.domain.solution.repository.SolutionRepository;
-import com.algorithm.mate.domain.submission.dto.SubmissionRequestDto;
 import com.algorithm.mate.domain.submission.entity.Submission;
 import com.algorithm.mate.domain.submission.repository.SubmissionRepository;
-import de.jplag.JPlagComparison;
 import de.jplag.exceptions.ExitException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ public class SimilarityContorller {
 
     @Autowired
     private SimilarityService similarityService;
-
     @Autowired
     private SubmissionRepository submissionRepository;
     @Autowired

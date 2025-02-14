@@ -52,6 +52,8 @@ public class SimilarityService {
             throw new CustomExitException("Error during comparison: " + e.getMessage());
         }
     }
+
+    //base 폴더 안에 특정 파일과 정답들을 유사도 검사
     public void compareWithBaseFile(String bkId, String problemId, String language ) throws CustomExitException {
         try{
 //            String baseFilePath = String.format("resources/solutions/%d/base/%s.%s", problemId, bkId, language.toLowerCase());
