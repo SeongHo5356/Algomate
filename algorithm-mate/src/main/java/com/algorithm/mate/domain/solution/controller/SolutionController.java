@@ -36,6 +36,7 @@ public class SolutionController {
         log.info(request.getFilePath());
         log.info(request.getLanguage());
         log.info("handle userId: {}", request.getUserId());
+
         // DTO를 entity로 변환
         Solution solution = new Solution(
                 request.getProblemId(),

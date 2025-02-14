@@ -15,6 +15,7 @@ import de.jplag.options.JPlagOptions;
 import de.jplag.options.LanguageOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -178,5 +179,12 @@ public class SimilarityService {
 
         log.info("Saving Similarity result: " + result);
         similarityRepository.save(result);
+    }
+
+    public List<Similarity> getTop10SimilaritiesByBkId(String bkId) throws CustomExitException {
+        return similarityRepository.findBySubmission_BkIdOrderBySimilarityScoreDesc(
+                bkId,
+                PageRequest.of(0,10)
+        );
     }
 }
