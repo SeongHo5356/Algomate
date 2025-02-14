@@ -1,5 +1,6 @@
 package com.algorithm.mate.domain.similarity.controller;
 
+import com.algorithm.mate.domain.similarity.entity.Similarity;
 import com.algorithm.mate.domain.similarity.exception.CustomExitException;
 import com.algorithm.mate.domain.similarity.service.SimilarityService;
 import com.algorithm.mate.domain.solution.entity.Solution;
@@ -9,6 +10,7 @@ import com.algorithm.mate.domain.submission.repository.SubmissionRepository;
 import de.jplag.exceptions.ExitException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,5 +52,11 @@ public class SimilarityContorller {
         }
 
         return "1";
+    }
+
+    @GetMapping("/select5")
+    public ResponseEntity<List<Similarity>> getTopSimilarities(@RequestParam String bkId) throws CustomExitException {
+        List<Similarity> topSimilarities = similarityService.getTop10SimilaritiesByBkId(bkId);
+        return ResponseEntity.ok(topSimilarities);
     }
 }
