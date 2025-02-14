@@ -25,20 +25,6 @@ public class SimilarityContorller {
     @Autowired
     private SolutionRepository solutionRepository;
 
-    @PostMapping("/compare2")
-    public String compareSolutions2(String problemId, String language){
-
-        String baseFilePath = System.getProperty("user.dir") + "/src/main/resources/solutions/" +problemId+ "/base";
-        String solutionsPath = System.getProperty("user.dir") + "/src/main/resources/solutions/" + problemId + "/" + language;
-
-        try{
-            similarityService.compareWithBaseFiles(baseFilePath, solutionsPath);
-            return "Comparison completed and results saved to database.";
-        } catch (ExitException e){
-            return "Error during comparison: " + e.getMessage();
-        }
-    }
-
     // bkId는 물론 language와 problem_id도 같이 요청을 받음
     // => bkId를 통해서 submission 테이블에서 language, problem_id를 조회하는 과정이 생략됨
     // => 그러나 bkId를 통해서 있는지 없는 지 먼저 조회해보면 될듯?

@@ -42,6 +42,7 @@ class SolutionServiceTest {
     }
 
     @Test
+    @DisplayName("현재 100개 이하기 때문에 false 가 출력돼야한다.")
     void givenExactly100Solutions(){
         //given
         String problemId = "1027";
@@ -57,6 +58,7 @@ class SolutionServiceTest {
     // 실패 테스트
 
     @Test
+    @DisplayName("현재 100개 이하기 때문에 false 가 출력돼야한다.")
     void givenMoreThan100Solutions(){
         //given
         String problemId = "1027";

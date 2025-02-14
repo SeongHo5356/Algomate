@@ -71,6 +71,8 @@ public class SubmissionService {
                 return "py";
             case "c++":
                 return "cpp";
+            case "c":
+                return "c";
             default:
                 throw new IllegalArgumentException("Unsupported language: " + language);
         }
