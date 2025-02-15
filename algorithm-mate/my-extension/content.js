@@ -20,7 +20,7 @@
     if (currentUrl.includes("acmicpc.net/problem/")) {
         const urlParts = currentUrl.split("/")
         const problemId = urlParts[4]
-        // 문제 페이지에서 서버에 페이지 데이터를 전송
+        // 문제 페이지에서 서버에 페이지 데이터를 전송 -> 문제페이지에 접근 시 크롤링 시작하기 위해서
         fetch('http://localhost:8080/api/v1/submit-data', {
             method: 'POST',
             headers: {
