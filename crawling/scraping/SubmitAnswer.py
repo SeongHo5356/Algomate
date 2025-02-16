@@ -10,6 +10,8 @@ import os
 from dotenv import load_dotenv
 from github.ConvertToGithubSearchFormat import convertToGithubSearchFormat
 from github.GithubFindAnswer import findAnswerFromGithub
+from utils.language_utils import determineSubmitLanguage
+
 
 # 백준에 정답을 제출하는 코드
 def setup_driver():
@@ -82,8 +84,8 @@ def submit_code(driver, problem_id, language, source_code):
 
         lang_selected = False
         for lang in langs:
-            # print("1. :", lang.text.lower())
-            # print("2. :", language.lower())
+            print("1. :", lang.text.lower())
+            print("2. :", language.lower())
             if lang.text.lower() == language.lower():
                 lang.click()
                 lang_selected = True
@@ -123,15 +125,15 @@ def login_and_submit_code(problem_id, language, code):
 
 
 if __name__ == "__main__":
-    load_dotenv()
 
+    load_dotenv()
     github_token = os.getenv("API_TOKEN")
 
     problem_id = "1027"
-    language = "C++17"
 
     searchFormat = convertToGithubSearchFormat(problem_id)
-    code = findAnswerFromGithub(searchFormat, github_token)
+    code, submitLang = findAnswerFromGithub(searchFormat, github_token)
+    language = determineSubmitLanguage(submitLang)
 
     if code:
         success = login_and_submit_code(problem_id, language, code)

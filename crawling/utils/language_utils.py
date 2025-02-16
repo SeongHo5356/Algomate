@@ -81,7 +81,7 @@ def map_language_to_file_extension(language_tag: str) -> str:
     return LANGUAGE_MAPPING.get(language_tag, ("text", ".txt"))[1]
 
 ## 백준에서 제출 시 선태하게 될 언어 옵션
-def determine_baekjoon_language(file_paths):
+def determineSubmitLanguage(file_paths):
     """
     파일 경로 또는 경로 목록에서 확장자를 기반으로 백준 제출 언어를 결정합니다.
 

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import base64
 from dotenv import load_dotenv
-from utils.language_utils import determine_baekjoon_language
+from utils.language_utils import determineSubmitLanguage
 import os
 
 # 깃헙에서 정답을 찾는 함수
