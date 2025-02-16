@@ -8,7 +8,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
 import os
 from dotenv import load_dotenv
-from github.ConvertToGithubSearchFormat import get_problem_info
+from github.ConvertToGithubSearchFormat import convertToGithubSearchFormat
 from github.GithubFindAnswer import findAnswerFromGithub
 
 # 백준에 정답을 제출하는 코드
@@ -127,11 +127,11 @@ if __name__ == "__main__":
 
     github_token = os.getenv("API_TOKEN")
 
-    problem_id = "16144"
+    problem_id = "1027"
     language = "C++17"
 
-    query = get_problem_info(problem_id)
-    code = findAnswerFromGithub(query, github_token)
+    searchFormat = convertToGithubSearchFormat(problem_id)
+    code = findAnswerFromGithub(searchFormat, github_token)
 
     if code:
         success = login_and_submit_code(problem_id, language, code)

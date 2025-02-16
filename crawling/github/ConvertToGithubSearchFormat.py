@@ -3,7 +3,7 @@ import requests
 # 백준에서 문제 정답 코드들을 보려면, 깃헙에서 일단 정답을 찾아서 백준에 하나 제출해야함
 # 그래서 깃헙에서 정답을 가져오기 위해서 백준에 겁색할 형식으로 return
 
-def get_problem_info(problem_id):
+def convertToGithubSearchFormat(problem_id):
     url = f"https://solved.ac/api/v3/problem/show?problemId={problem_id}"
     headers = {'Content-Type': 'application/json'}
 
@@ -38,7 +38,7 @@ def get_problem_info(problem_id):
 # 사용 예시
 if __name__ == "__main__":
     problem_id = input("문제 번호를 입력하세요: ")
-    result = get_problem_info(problem_id)
+    result = convertToGithubSearchFormat(problem_id)
     if result:
         print(result)
     else:
