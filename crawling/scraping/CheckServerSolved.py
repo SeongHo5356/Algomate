@@ -5,14 +5,14 @@ import requests
 # 계정이 정답을 제출한 적 있으면 바로 크롤링 가능
 # 계정이 정답을 제출한 적 없으면, 깃헙에서 정답을 찾아서 제출하고 크롤링 가능
 
+# 해당 문제가 푼 문제인지 T/F 반환
 def check_problem_solved(problem_number):
     data = get_all_problems("robot3104")
     # # 전체 리스트 solved, attempt but not solved. .. 모든 리스트에서 탐색
     # return any(problem_number in data[key] for key in data)
     return int(problem_number) in data['solved']
 
-
-
+# 내가 푼 문제의 리스트 반환
 def get_all_problems(username):
     url = f"https://www.acmicpc.net/user/{username}"
     headers = {
