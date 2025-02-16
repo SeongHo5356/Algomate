@@ -1,5 +1,5 @@
 (function() {
-    const externalFileUrls = [
+    let externalFileUrls = [
         'http://127.0.0.1:8000/files/sample1.py',
         'http://127.0.0.1:8000/files/sample2.py',
         'http://127.0.0.1:8000/files/sample3.py',
@@ -113,54 +113,106 @@
 
             currentFileIndex = (currentFileIndex + 1) % externalFileUrls.length;
             isSimilarCodeDisplayed = false;
-            await displayExternalFileContent(currentFileIndex);
+            await displayExternalFileContent(externalFileUrls, currentFileIndex);
         });
 
-        similarButton.addEventListener('click', (event) => {
+        similarButton.addEventListener('click', async (event) => {
             event.preventDefault();
             event.stopPropagation();
 
             if (!isSimilarCodeDisplayed) {
-                displayExternalFileContent(currentFileIndex);
-                isSimilarCodeDisplayed = true;
+                try {
+                    const submissionId = getSubmissionIdFromUrl(); // 제출 ID 가져오기
+                    const fileUrls = await fetchSimilarCodeUrls(submissionId); // 서버에서 파일 목록 가져오기
+
+                    console.log("받은 유사 코드 파일 경로들:", fileUrls);
+
+                    if (fileUrls.length > 0) {
+                        externalFileUrls = fileUrls;
+                        currentFileIndex = 0;
+                        await displayExternalFileContent(fileUrls, currentFileIndex);
+                        isSimilarCodeDisplayed = true;
+                    } else {
+                        console.log('유사한 코드가 없습니다.');
+                    }
+                } catch (error) {
+                    console.error('유사 코드 요청 중 오류 발생:', error);
+                }
             } else {
                 clearCodeContainer();
                 isSimilarCodeDisplayed = false;
             }
         });
     }
+    function getSubmissionIdFromUrl() {
+        const urlParts = window.location.pathname.split('/');
+        return urlParts[urlParts.length - 1]; // URL의 마지막 부분이 제출 ID
+    }
 
-    async function displayExternalFileContent(index) {
+    async function fetchSimilarCodeUrls(submissionId) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/similarity/select5?bkId=${submissionId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) {
+                throw new Error(`서버 요청 실패: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+
+            // 🔹 파일 경로를 올바른 정적 리소스 URL로 변환
+            return result.map(filePath => `http://localhost:8080/${filePath}`);
+        } catch (error) {
+            console.error('유사 코드 요청 중 오류 발생:', error);
+            return [];
+        }
+    }
+
+
+
+    async function displayExternalFileContent(externalFileUrls, index) {
         const fileUrl = externalFileUrls[index];
-        console.log('test : 외부 파일 요청 URL:', fileUrl);
+
+        console.log('외부 파일 요청 URL:', fileUrl);
 
         try {
             const response = await fetch(fileUrl);
             if (!response.ok) {
-                throw new Error(`test : 파일을 읽을 수 없습니다: ${response.statusText}`);
+                throw new Error(`파일을 읽을 수 없습니다: ${response.statusText}`);
             }
 
             const fileContent = await response.text();
             const codeContainer = document.querySelector('.CodeMirror-code');
             if (!codeContainer) {
-                console.warn('test : 코드 컨테이너(.CodeMirror-code)를 찾을 수 없습니다.');
+                console.warn('코드 컨테이너(.CodeMirror-code)를 찾을 수 없습니다.');
                 return;
             }
 
+            // 기존 코드 삭제
             codeContainer.innerHTML = '';
-            const preElement = document.createElement('pre');
-            preElement.textContent = fileContent;
-            preElement.style.whiteSpace = 'pre-wrap';
-            preElement.style.fontFamily = 'monospace';
-            preElement.style.fontSize = '14px';
-            preElement.style.lineHeight = '1.5';
 
+            // 🔹 <pre><code> 태그로 감싸서 코드 하이라이팅 적용
+            const preElement = document.createElement('pre');
+            const codeElement = document.createElement('code');
+            codeElement.className = 'language-python'; // 파이썬 코드 하이라이팅 적용
+            codeElement.textContent = fileContent;
+
+            preElement.appendChild(codeElement);
             codeContainer.appendChild(preElement);
-            console.log('test : 파일이 성공적으로 표시되었습니다.');
+
+            // 🔹 코드 하이라이팅 라이브러리 Prism.js 적용
+            if (window.Prism) {
+                Prism.highlightElement(codeElement);
+            }
+
+            console.log('파일이 성공적으로 표시되었습니다.');
         } catch (error) {
-            console.error('test : 파일을 처리하는 중 오류가 발생했습니다:', error);
+            console.error('파일을 처리하는 중 오류가 발생했습니다:', error);
         }
     }
+
 
     function clearCodeContainer() {
         const codeContainer = document.querySelector('.CodeMirror-code');

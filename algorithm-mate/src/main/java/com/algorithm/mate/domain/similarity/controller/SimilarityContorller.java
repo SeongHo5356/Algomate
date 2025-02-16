@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -55,8 +59,32 @@ public class SimilarityContorller {
     }
 
     @GetMapping("/select5")
-    public ResponseEntity<List<Similarity>> getTopSimilarities(@RequestParam String bkId) throws CustomExitException {
+    public ResponseEntity<List<String>> getTopSimilarities(@RequestParam String bkId) throws CustomExitException {
         List<Similarity> topSimilarities = similarityService.getTop10SimilaritiesByBkId(bkId);
-        return ResponseEntity.ok(topSimilarities);
+
+        System.out.println("==== 유사 코드 목록 ====");
+        List<String> filePaths = new ArrayList<>();
+
+        for (Similarity similarity : topSimilarities) {
+            long problemId = similarity.getProblemId(); // 문제 번호
+            String fileName = similarity.getAnswerId(); // 파일 이름
+
+            // 🔹 상대 경로로 변환
+            String relativePath = String.format("%d/py/%s", problemId, fileName);
+            Path absolutePath = Paths.get("/Users/sungho/Documents/study/Algomate/algorithm-mate/src/main/resources/solutions", relativePath);
+
+            // 🔹 파일이 존재하는 경우만 추가
+            if (Files.exists(absolutePath)) {
+                filePaths.add(relativePath);
+                System.out.println("파일 경로: " + relativePath);
+            } else {
+                System.out.println("❌ 파일 없음: " + relativePath);
+            }
+
+            System.out.println("---------------------");
+        }
+
+        return ResponseEntity.ok(filePaths);
     }
+
 }

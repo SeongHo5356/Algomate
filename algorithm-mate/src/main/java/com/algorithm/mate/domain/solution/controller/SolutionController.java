@@ -3,11 +3,8 @@ package com.algorithm.mate.domain.solution.controller;
 import com.algorithm.mate.domain.solution.dto.SolutionRequestDto;
 import com.algorithm.mate.domain.solution.entity.Solution;
 import com.algorithm.mate.domain.solution.service.SolutionService;
-import com.algorithm.mate.domain.submission.dto.SubmissionRequestDto;
-import com.algorithm.mate.domain.submission.entity.Submission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

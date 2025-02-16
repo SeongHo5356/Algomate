@@ -40,9 +40,12 @@ dependencies {
 
 	// jplag 유사도 검사
 	implementation 'de.jplag:jplag:3.0.0'
+
 	// 파이썬 parser
 	implementation 'org.antlr:antlr4-runtime:4.9.2'
 
+	// swagger 적용
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 }
 
 tasks.named('test') {
