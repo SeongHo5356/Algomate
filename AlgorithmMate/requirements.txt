@@ -5,3 +5,5 @@ requests
 selenium
 python-dotenv
 watchdog
+sqlalchemy
+psycopg2-binary

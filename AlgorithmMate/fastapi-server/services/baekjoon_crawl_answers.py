@@ -11,6 +11,11 @@ from check_server_solved import check_problem_solved
 from full_process_search_n_submit import f_process
 from language_options import get_file_extention_and_folder
 
+import sys
+import os
+
+from model import db_controller
+
 
 # 로그인 함수
 def login(driver, username, password):
@@ -160,6 +165,8 @@ def scrape_solutions(driver, problem_id, language_id, base_save_directory="solut
                         })
                         solution_count += 1
 
+                        db_controller.send_solution_to_api(problem_id, file_path, file_extension, user_id)
+
                         # 뒤로가기
                         driver.back()
                         time.sleep(1)
@@ -196,6 +203,8 @@ def scrape_solutions(driver, problem_id, language_id, base_save_directory="solut
 
                 # 각 링크를 개별적으로 접근하여 새롭게 요소를 가져옵니다
                 for i in range(len(code_links)):
+                ##### 디버깅 위해서 1로 설정한거임 나중에 위에 주석으로 바꿔주셈
+                # for i in range(2):
                     code_links = WebDriverWait(driver, 10).until(
                         EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[href^="/source/"]'))
                     )  # 페이지로 돌아온 후 다시 요소 목록을 가져옴
@@ -243,6 +252,8 @@ def scrape_solutions(driver, problem_id, language_id, base_save_directory="solut
                             "language": file_extension
                         })
                         solution_count += 1
+
+                        db_controller.send_solution_to_api(problem_id, file_path, file_extension, user_id)
 
                         # 뒤로가기
                         driver.back()

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Solution
+from .models import Solution
 
 def add_solution_to_db(db: Session, problem_id: str, file_path: str, language: str, user_id: str):
     solution = Solution(
@@ -10,4 +10,4 @@ def add_solution_to_db(db: Session, problem_id: str, file_path: str, language: s
     )
     db.add(solution)
     db.commit()
-    db.referesh(solution)
+    db.refresh(solution)

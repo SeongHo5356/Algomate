@@ -1,6 +1,5 @@
 import subprocess
 
-
 def run_jplag(jplag_path, solutions_path, results_path, language="python3", keyword="kjeng7897"):
     """
     JPlag을 실행하고 특정 키워드가 포함된 결과를 필터링합니다.

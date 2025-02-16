@@ -114,7 +114,7 @@ def determine_baekjoon_language(file_paths):
     raise ValueError("지원되지 않는 확장자가 포함되어 있습니다.")
 
 
-def get_file_extention_and_folder(mime_type):
+def  get_file_extention_and_folder(mime_type):
     """
     MIME 타입을 기반으로 파일 확장자와 언어 폴더 이름을 반환합니다.
 

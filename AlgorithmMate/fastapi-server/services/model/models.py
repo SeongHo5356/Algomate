@@ -3,7 +3,8 @@ from sqlalchemy import Column, String, Integer, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = os.environ['DATABASE_URL']
+# DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = "postgresql://algomate:algomate7897@localhost:5432/algomate_db"
 
 Base = declarative_base()
 engine = create_engine(DATABASE_URL)

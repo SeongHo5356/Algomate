@@ -1,11 +1,12 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from services import check_server_solved
 from services.check_code_similarity import run_jplag
-from services.language_options import map_language_to_jplag_option, map_language_to_file_extension, get_file_extention_and_folder, get_folder_from_extension
-from services.save_file_to_client import save_top_similarity_files
+from services.language_options import map_language_to_jplag_option, map_language_to_file_extension, \
+    get_folder_from_extension
+# from services.save_file_to_client import save_top_similarity_files
 import uvicorn
 from fastapi import FastAPI
 from watchdog.observers import Observer
@@ -13,7 +14,7 @@ from watchdog.events import FileSystemEventHandler
 import os
 
 
-from fastapi.responses import FileResponse, PlainTextResponse
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
@@ -92,8 +93,8 @@ async def receive_code(data: CodeData):
         similarity_results = run_jplag(jplag_path, solutions_path, results_path, language=jplag_language, keyword = data.userId)
 
         # 상위 2개의 유사도 결과 파일 저장
-        similarities = save_top_similarity_files(similarity_results, solutions_path, to_clients_path, keyword = data.userId)
-        print(similarities)
+        # similarities = save_top_similarity_files(similarity_results, solutions_path, to_clients_path, keyword = data.userId)
+        # print(similarities)
 
         # JPlag 실행 후 저장된 파일 삭제
         if os.path.exists(file_path):
@@ -193,10 +194,11 @@ def get_modified_files():
     # 현재까지 감지된 변경된 파일 반환
     return {"modified_files": modified_files}
 
-from model.models import SessionLocal
-from model.db_service import add_solution_to_db
+from services.model.models import SessionLocal
+from services.model.db_service import add_solution_to_db
 from sqlalchemy.orm import Session
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI, Depends, Query
+
 # 의존성 주입
 def get_db():
     db = SessionLocal()
@@ -205,11 +207,20 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/solutions")
-async def save_solution(problem_id: str, file_path: str, language:str, user_id: str, db: Session = Depends(get_db)):
-    add_solution_to_db(db, problem_id, file_path, language, user_id)
-    return {"message": "Solution saved successfully"}
+# Pydantic 모델을 사용하여 데이터를 받음
+class SolutionIn(BaseModel):
+    problem_id: str
+    file_path: str
+    language: str
+    user_id: str
 
+@app.post("/solutions")
+async def save_solution(
+    solution: SolutionIn,  # Body로 받기
+    db: Session = Depends(get_db)
+):
+    add_solution_to_db(db, solution.problem_id, solution.file_path, solution.language, solution.user_id)
+    return {"message": "Solution saved successfully"}
 
 if __name__ == "__main__":
     # 파일 감지 설정
