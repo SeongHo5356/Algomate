@@ -65,7 +65,7 @@ def get_file_content(owner, repo, file_path, token):
 5. 찾은 커밋의 repo 이름
 6. 찾은 커밋에서 정답 코드의 이름
 """
-def main(query, token):
+def findAnswerFromGithub(query, token):
     try:
         commit_url = search_github_commits(query, token)
         print(f"찾은 커밋 URL: {commit_url}")
@@ -98,4 +98,4 @@ if __name__ == "__main__":
     load_dotenv()
     token = os.getenv("API_TOKEN")
     query = "[Gold IV] Title: 고층 건물"
-    print(main(query, token))
+    print(findAnswerFromGithub(query, token))

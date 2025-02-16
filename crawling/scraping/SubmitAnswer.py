@@ -9,7 +9,7 @@ import time
 import os
 from dotenv import load_dotenv
 from github.ConvertToGithubSearchFormat import get_problem_info
-from github.GithubFindAnswer import main
+from github.GithubFindAnswer import findAnswerFromGithub
 
 # 백준에 정답을 제출하는 코드
 def setup_driver():
@@ -19,8 +19,11 @@ def setup_driver():
     return webdriver.Chrome()
 
 
-def login(driver, username, password):
+def login(driver):
     driver.get("https://www.acmicpc.net/login")
+
+    username = os.getenv("BAEKJOON_USERNAME")
+    password = os.getenv("BAEKJOON_PASSWORD")
 
     try:
         username_field = WebDriverWait(driver, 10).until(
@@ -109,10 +112,10 @@ def submit_code(driver, problem_id, language, source_code):
         return False
 
 
-def login_and_submit_code(username, password, problem_id, language, code):
+def login_and_submit_code(problem_id, language, code):
     driver = setup_driver()
     try:
-        if login(driver, username, password):
+        if login(driver):
             return submit_code(driver, problem_id, language, code)
         return False
     finally:
@@ -122,18 +125,16 @@ def login_and_submit_code(username, password, problem_id, language, code):
 if __name__ == "__main__":
     load_dotenv()
 
-    username = os.getenv("BAEKJOON_USERNAME")
-    password = os.getenv("BAEKJOON_PASSWORD")
     github_token = os.getenv("API_TOKEN")
 
     problem_id = "16144"
     language = "C++17"
 
     query = get_problem_info(problem_id)
-    code = main(query, github_token)
+    code = findAnswerFromGithub(query, github_token)
 
     if code:
-        success = login_and_submit_code(username, password, problem_id, language, code)
+        success = login_and_submit_code(problem_id, language, code)
         print(f"제출 성공: {success}")
     else:
         print("코드를 가져오는데 실패했습니다.")
