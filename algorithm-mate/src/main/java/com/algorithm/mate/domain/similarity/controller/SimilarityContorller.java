@@ -3,6 +3,7 @@ package com.algorithm.mate.domain.similarity.controller;
 import com.algorithm.mate.domain.similarity.entity.Similarity;
 import com.algorithm.mate.domain.similarity.exception.CustomExitException;
 import com.algorithm.mate.domain.similarity.service.SimilarityService;
+import com.algorithm.mate.domain.similarity.service.SimilarityService2;
 import com.algorithm.mate.domain.solution.entity.Solution;
 import com.algorithm.mate.domain.solution.repository.SolutionRepository;
 import com.algorithm.mate.domain.submission.entity.Submission;
@@ -25,7 +26,7 @@ import java.util.List;
 public class SimilarityContorller {
 
     @Autowired
-    private SimilarityService similarityService;
+    private SimilarityService2 similarityService;
     @Autowired
     private SubmissionRepository submissionRepository;
     @Autowired
@@ -84,6 +85,7 @@ public class SimilarityContorller {
             System.out.println("---------------------");
         }
 
+//        /Users/sungho/Documents/study/Algomate/algorithm-mate/src/main/resources/solutions/1027/py/gbyeo31.py
         return ResponseEntity.ok(filePaths);
     }
 

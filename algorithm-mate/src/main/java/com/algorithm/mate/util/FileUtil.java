@@ -1,42 +1,30 @@
 package com.algorithm.mate.util;
 
 import com.algorithm.mate.domain.similarity.exception.CustomExitException;
-import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
-@Slf4j
-public class FileUtil {
+public interface FileUtil {
+    /**
+     * 임시 디렉토리를 생성합니다.
+     * @return 생성된 임시 디렉토리의 Path
+     * @throws CustomExitException 생성 실패 시 예외
+     */
+    Path createTempDirectory() throws CustomExitException;
 
-    public static Path createTempDirectory() throws CustomExitException {
-        try {
-            return Files.createTempDirectory("jplag");
-        } catch (Exception e) {
-            throw new CustomExitException("Failed to create temp directory: " + e.getMessage());
-        }
-    }
+    /**
+     * 단일 파일을 복사합니다.
+     * @param source 원본 파일 경로
+     * @param target 대상 파일 경로
+     * @throws CustomExitException 복사 실패 시 예외
+     */
+    void copyFile(Path source, Path target) throws CustomExitException;
 
-    public static void copyFile(Path source, Path target) throws CustomExitException {
-        try {
-            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            throw new CustomExitException("Failed to copy file: " + e.getMessage());
-        }
-    }
-
-    public static void copyFilesFromDirectory(String sourceDir, Path targetDir) throws CustomExitException {
-        try {
-            File[] files = new File(sourceDir).listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    copyFile(file.toPath(), targetDir.resolve(file.getName()));
-                }
-            }
-        } catch (Exception e) {
-            throw new CustomExitException("Failed to copy files: " + e.getMessage());
-        }
-    }
+    /**
+     * 지정한 디렉토리의 모든 파일을 대상 디렉토리로 복사합니다.
+     * @param sourceDir 원본 디렉토리 경로
+     * @param targetDir 대상 디렉토리의 Path
+     * @throws CustomExitException 복사 실패 시 예외
+     */
+    void copyFilesFromDirectory(String sourceDir, Path targetDir) throws CustomExitException;
 }
