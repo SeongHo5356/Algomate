@@ -61,6 +61,7 @@ def get_file_content(owner, repo, file_path, token):
 1. 찾은 커밋 url
 2. 찾은 커밋의 커밋된 파일 목록
 3. 찾은 파일의 경로
+3. 찾은 파일은 어느 형식으로 백준에 제출할지
 4. 찾은 커밋 repo의 owner
 5. 찾은 커밋의 repo 이름
 6. 찾은 커밋에서 정답 코드의 이름
@@ -74,7 +75,7 @@ def findAnswerFromGithub(query, token):
         print(f"file_path: {file_path}")
 
         # 언어 결정
-        submit_lang = determine_baekjoon_language(file_path)
+        submit_lang = determineSubmitLanguage(file_path)
         print(f"submit lang: {submit_lang}")
 
         owner, repo = extract_owner_repo(commit_url)

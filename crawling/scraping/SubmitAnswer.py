@@ -1,25 +1,25 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-import time
 import os
+import pickle
 from dotenv import load_dotenv
 from github.ConvertToGithubSearchFormat import convertToGithubSearchFormat
 from github.GithubFindAnswer import findAnswerFromGithub
-from utils.language_utils import determineSubmitLanguage
 
+# 쿠키 저장 함수
+def save_cookies(driver, filename="cookies.pkl"):
+    with open(filename, "wb") as f:
+        pickle.dump(driver.get_cookies(), f)
 
-# 백준에 정답을 제출하는 코드
-def setup_driver():
-    #     options = Options()
-    #     options.add_argument("--headless")  # 필요에 따라 주석 처리
-    #     return webdriver.Chrome(options=options)
-    return webdriver.Chrome()
-
+# 쿠키 불러오기 함수
+def load_cookies(driver, filename="cookies.pkl"):
+    with open(filename, "rb") as f:
+        cookies = pickle.load(f)
+        for cookie in cookies:
+            driver.add_cookie(cookie)
 
 def login(driver):
     driver.get("https://www.acmicpc.net/login")
@@ -56,13 +56,36 @@ def login(driver):
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "username"))
         )
+
+        save_cookies(driver) #로그인 성공하고 쿠키 저장
         print("로그인 성공")
         return True
 
-    except TimeoutException:
-        print("로그인 실패: 요소를 찾을 수 없거나 클릭할 수 없습니다.")
+    except Exception as e:
+        print(f"로그인 실패: {e}")
         return False
 
+# 로그인 시 쿠키 사용 함수
+def login_using_cookies(driver):
+    driver.get("https://www.acmicpc.net")
+    try:
+        load_cookies(driver)  # 쿠키 불러오기
+        driver.get("https://www.acmicpc.net/login")  # 페이지를 새로고침하여 로그인된 상태 확인
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "username"))
+        )
+        print("이미 로그인된 상태입니다.")
+        return True
+    except Exception as e:
+        print(f"쿠키 로드 실패: {e}")
+        return False
+
+# 백준에 정답을 제출하는 코드
+def setup_driver():
+    #     options = Options()
+    #     options.add_argument("--headless")  # 필요에 따라 주석 처리
+    #     return webdriver.Chrome(options=options)
+    return webdriver.Chrome()
 
 def submit_code(driver, problem_id, language, source_code):
     driver.get(f'https://www.acmicpc.net/submit/{problem_id}')
@@ -84,8 +107,8 @@ def submit_code(driver, problem_id, language, source_code):
 
         lang_selected = False
         for lang in langs:
-            print("1. :", lang.text.lower())
-            print("2. :", language.lower())
+            # print("1. :", lang.text.lower())
+            # print("2. :", language.lower())
             if lang.text.lower() == language.lower():
                 lang.click()
                 lang_selected = True
@@ -117,8 +140,14 @@ def submit_code(driver, problem_id, language, source_code):
 def login_and_submit_code(problem_id, language, code):
     driver = setup_driver()
     try:
-        if login(driver):
-            return submit_code(driver, problem_id, language, code)
+        if login_using_cookies(driver):
+            print("쿠키로 로그인 성공")
+        else:
+            if login(driver):
+                print("새로 로그인 성공")
+
+        return submit_code(driver, problem_id, language, code)
+
         return False
     finally:
         driver.quit()
@@ -133,10 +162,9 @@ if __name__ == "__main__":
 
     searchFormat = convertToGithubSearchFormat(problem_id)
     code, submitLang = findAnswerFromGithub(searchFormat, github_token)
-    language = determineSubmitLanguage(submitLang)
 
     if code:
-        success = login_and_submit_code(problem_id, language, code)
+        success = login_and_submit_code(problem_id, submitLang, code)
         print(f"제출 성공: {success}")
     else:
         print("코드를 가져오는데 실패했습니다.")
