@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from language_options import determine_baekjoon_language
 import os
 
+
 # 깃헙에서 정답을 찾는 함수
 def search_github_commits(query, token):
     """GitHub API를 사용하여 커밋을 검색합니다."""

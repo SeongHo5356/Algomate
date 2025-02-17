@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-from services import check_server_solved
+from crawling.scraping import check_server_solved
 from services.check_code_similarity import run_jplag
 from services.language_options import map_language_to_jplag_option, map_language_to_file_extension, \
     get_folder_from_extension
@@ -197,7 +197,7 @@ def get_modified_files():
 from services.model.models import SessionLocal
 from services.model.db_service import add_solution_to_db
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, Query
+from fastapi import  Depends
 
 # 의존성 주입
 def get_db():

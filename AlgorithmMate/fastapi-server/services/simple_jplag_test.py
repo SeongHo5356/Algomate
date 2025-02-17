@@ -45,6 +45,7 @@ def run_jplag(jplag_path, solutions_path, results_path, language="python3"):
         print(f"Error during JPlag execution: {e}")
 
 
+
 # 메인 코드
 if __name__ == "__main__":
     # 경로 설정

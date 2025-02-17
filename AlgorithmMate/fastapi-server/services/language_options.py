@@ -182,6 +182,7 @@ def get_folder_from_extension(data_language):
         "txt": "text",
     }
 
+
     # 확장자를 키로 매핑하여 폴더명을 반환
     folder_name = extension_to_folder.get(file_extension.strip("."), "other")
     return folder_name

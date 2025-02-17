@@ -13,7 +13,7 @@ import com.algorithm.mate.domain.submission.service.SubmissionService;
 import de.jplag.JPlag;
 import de.jplag.JPlagComparison;
 import de.jplag.JPlagResult;
-import de.jplag.exceptions.ExitException;
+import de.jplag.exceptions.ExitException    ;
 import de.jplag.options.JPlagOptions;
 import de.jplag.options.LanguageOption;
 import lombok.extern.slf4j.Slf4j;

@@ -7,6 +7,7 @@ def get_problem_info(problem_id):
     url = f"https://solved.ac/api/v3/problem/show?problemId={problem_id}"
     headers = {'Content-Type': 'application/json'}
 
+
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xx

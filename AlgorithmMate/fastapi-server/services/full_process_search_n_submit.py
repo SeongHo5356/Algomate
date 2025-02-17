@@ -27,5 +27,17 @@ def f_process(problem_id):
 
 # 사용 예시
 if __name__ == "__main__":
+
+    # problem_id = "1027"
+    #
+    # searchFormat = convertToGithubSearchFormat(problem_id)
+    # code, submitLang = findAnswerFromGithub(searchFormat)
+    #
+    # if code:
+    #     success = login_and_submit_code(problem_id, submitLang, code)
+    #     print(f"제출 성공: {success}")
+    # else:
+    #     print("코드를 가져오는데 실패했습니다.")
+
     problem_id = input("문제 번호를 입력하세요: ")
     f_process(problem_id)

@@ -1,6 +1,4 @@
 from selenium import webdriver
-import json
-import os
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -11,11 +9,9 @@ from check_server_solved import check_problem_solved
 from full_process_search_n_submit import f_process
 from language_options import get_file_extention_and_folder
 
-import sys
 import os
 
 from model import db_controller
-
 
 # 로그인 함수
 def login(driver, username, password):

@@ -35,6 +35,7 @@
 #     return similarities
 #
 #
+
 # if __name__ == "__main__":
 #     # JPlag 실행 예제
 #     jplag_path = "C:/Users/kjeng/Desktop/jplag_3_0.jar"
