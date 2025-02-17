@@ -48,9 +48,9 @@ class ScrapingService:
 
         # ✅ 3. 크롤링한 코드 저장 및 API 전송
         for solution in solutions:
-            file_path, file_extension = save_solution_to_file(
-                problem_id, solution["user_id"], solution["code"], solution["mime_type"]
-            )
+            # file_path, file_extension = save_solution_to_file(
+            #     problem_id, solution["user_id"], solution["code"], solution["mime_type"]
+            # )
             send_solution_to_api(problem_id, solution["user_id"], solution["code"], solution["mime_type"])
 
         print("✅ 전체 크롤링 및 저장 완료!")
@@ -70,9 +70,9 @@ class ScrapingService:
 
         # ✅ 3. 크롤링한 코드 저장 및 API 전송
         for solution in solutions:
-            file_path, file_extension = save_solution_to_file(
-                problem_id, solution["user_id"], solution["code"], solution["mime_type"]
-            )
+            # file_path, file_extension = save_solution_to_file(
+            #     problem_id, solution["user_id"], solution["code"], solution["mime_type"]
+            # )
             send_solution_to_api(problem_id, solution["user_id"], solution["code"], solution["mime_type"])
 
         print("✅ 전체 크롤링 및 저장 완료!")
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     try:
         # ✅ 크롤링 실행 (문제 ID와 언어 ID 설정)
-        problem_id = "1032"
+        problem_id = "1030"
         language_id = "1003"  # 예시 언어 ID
 
         print("🚀 크롤링 프로세스 시작...")
