@@ -21,9 +21,17 @@ def load_cookies(driver, filename="cookies.pkl"):
         for cookie in cookies:
             driver.add_cookie(cookie)
 
+# 쿠키 갱신 함수
+def refresh_cookies(driver):
+    # 쿠키를 다시 로드하고 로그인 절차를 통해 갱신
+    login(driver)  # 로그인 함수 호출
+    save_cookies(driver)  # 새 쿠키 저장
+
 def login(driver):
     driver.get("https://www.acmicpc.net/login")
 
+    # 로그인 정보
+    load_dotenv()
     username = os.getenv("BAEKJOON_USERNAME")
     password = os.getenv("BAEKJOON_PASSWORD")
 
@@ -136,9 +144,8 @@ def submit_code(driver, problem_id, language, source_code):
         print(f"제출 중 오류 발생: {e}")
         return False
 
-
-def login_and_submit_code(problem_id, language, code):
-    driver = setup_driver()
+# 쿠키로 로그인해보고 안되면 새로 로그인 그리고 정답을 제출
+def login_and_submit_code(driver, problem_id, language, code):
     try:
         if login_using_cookies(driver):
             print("쿠키로 로그인 성공")
@@ -150,18 +157,15 @@ def login_and_submit_code(problem_id, language, code):
 
         return False
     finally:
-        driver.quit()
-
+        # driver.quit()
+        return 1
 
 if __name__ == "__main__":
-
-    load_dotenv()
-    github_token = os.getenv("API_TOKEN")
 
     problem_id = "1027"
 
     searchFormat = convertToGithubSearchFormat(problem_id)
-    code, submitLang = findAnswerFromGithub(searchFormat, github_token)
+    code, submitLang = findAnswerFromGithub(searchFormat)
 
     if code:
         success = login_and_submit_code(problem_id, submitLang, code)
