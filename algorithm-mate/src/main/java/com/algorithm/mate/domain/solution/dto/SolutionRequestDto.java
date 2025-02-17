@@ -9,4 +9,6 @@ public class SolutionRequestDto {
     private String filePath;
     private String language;
     private String userId;
+    private String code;
+    private String mimeType;
 }

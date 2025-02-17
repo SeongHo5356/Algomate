@@ -1,21 +1,21 @@
 # 저장 폴더 매핑
 # MIME 매핑 딕셔너리
 MIME_MAP = {
-    "c++": ("cpp", "cpp"),
-    "text/x-c++src": ("cpp", "cpp"),
-    "text/x-csrc": ("c", "c"),
-    "text/x-rustsrc": ("rs", "rust"),
-    "text/x-ruby": ("rb", "ruby"),
-    "text/x-kotlin": ("kt", "kotlin"),
+    "c++": ("cpp", "Cpp"),
+    "text/x-c++src": ("cpp", "C++"),
+    "text/x-csrc": ("c", "C"),
+    "text/x-rustsrc": ("rs", "Rust"),
+    "text/x-ruby": ("rb", "Ruby"),
+    "text/x-kotlin": ("kt", "Kotlin"),
     "text/x-swift": ("swift", "swift"),
     "text/x-csharp": ("cs", "csharp"),
-    "text/javascript": ("js", "javascript"),
-    "text/x-go": ("go", "go"),
+    "text/javascript": ("js", "Javascript"),
+    "text/x-go": ("go", "Go"),
     "text/x-d": ("d", "d"),
-    "text/x-python": ("py", "python"),
-    "python": ("py", "python"),
-    "text/x-java": ("java", "java"),
-    "java": ("java", "java"),
+    "text/x-python": ("py", "Python"),
+    "python": ("py", "Python"),
+    "text/x-java": ("java", "Java"),
+    "java": ("java", "Java"),
     "text/plain": ("txt", "text"),
 }
 

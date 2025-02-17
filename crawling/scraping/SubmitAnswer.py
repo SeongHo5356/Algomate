@@ -8,6 +8,7 @@ import pickle
 from dotenv import load_dotenv
 from github.ConvertToGithubSearchFormat import convertToGithubSearchFormat
 from github.GithubFindAnswer import findAnswerFromGithub
+import time
 
 # 쿠키 저장 함수
 def save_cookies(driver, filename="cookies.pkl"):
@@ -26,6 +27,24 @@ def refresh_cookies(driver):
     # 쿠키를 다시 로드하고 로그인 절차를 통해 갱신
     login(driver)  # 로그인 함수 호출
     save_cookies(driver)  # 새 쿠키 저장
+
+def tryCookieThenLogin(driver):
+    """ ✅ 쿠키 로그인 시도 → 실패하면 새 로그인 """
+    try:
+        if login_using_cookies(driver):
+            print("✅ 쿠키로 로그인 성공")
+            return True
+        elif login(driver):
+            print("✅ 새로 로그인 성공")
+            return True
+        else:
+            print("🚨 로그인 실패")
+            return False
+
+    except Exception as e:
+        print(f"🚨 로그인 중 오류 발생: {e}")
+        return False
+
 
 def login(driver):
     driver.get("https://www.acmicpc.net/login")
@@ -132,6 +151,21 @@ def submit_code(driver, problem_id, language, source_code):
         result = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '#status-table tbody tr:first-child .result-text')))
         print(f"제출 결과: {result.text}")
+
+        result_wait_status = ["기다리는 중", "채점 준비 중", "재채점을 기다리는 중", "채점 중"]
+        result_finish_status = ["맞았습니다!!", "출력 형식이 잘못되었습니다", "틀렸습니다", "시간 초과", "메모리 초과", "출력 초과", "런타임 에러", "컴파일 에러"]
+
+
+        while True:
+            print("🔄 채점 진행 중...")
+            time.sleep(1) # ✅ 1초 대기 후 다시 확인
+
+            result = driver.find_element(By.CSS_SELECTOR, '#status-table tbody tr:first-child .result-text')
+
+            # ✅ "채점 중 (2%)" 과 같은 형식도 확인 (정규 표현식 사용)
+            if result.text in result_finish_status:
+                break  # ✅ 채점 완료 상태라면 반복문 종료
+
         return '점' in result.text or '맞았습니다' in result.text
 
     except TimeoutException:
@@ -144,31 +178,9 @@ def submit_code(driver, problem_id, language, source_code):
         print(f"제출 중 오류 발생: {e}")
         return False
 
-# 쿠키로 로그인해보고 안되면 새로 로그인 그리고 정답을 제출
-def login_and_submit_code(driver, problem_id, language, code):
-    try:
-        if login_using_cookies(driver):
-            print("쿠키로 로그인 성공")
-        else:
-            if login(driver):
-                print("새로 로그인 성공")
-
-        return submit_code(driver, problem_id, language, code)
-
-        return False
-    finally:
-        # driver.quit()
-        return 1
-
 if __name__ == "__main__":
 
     problem_id = "1027"
 
     searchFormat = convertToGithubSearchFormat(problem_id)
     code, submitLang = findAnswerFromGithub(searchFormat)
-
-    if code:
-        success = login_and_submit_code(problem_id, submitLang, code)
-        print(f"제출 성공: {success}")
-    else:
-        print("코드를 가져오는데 실패했습니다.")

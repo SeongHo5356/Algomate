@@ -1,3 +1,4 @@
+import requests
 from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
@@ -5,12 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoSuchElementException
 from dotenv import load_dotenv
-from CheckServerSolved import check_problem_solved
 
 from github.ConvertToGithubSearchFormat import convertToGithubSearchFormat
 from github.GithubFindAnswer import findAnswerFromGithub
+from services.scraping_service import ScrapingService
 from utils.mime_utils import get_file_extension_and_folder
-from SubmitAnswer import login, login_and_submit_code
 
 import os
 
@@ -61,10 +61,15 @@ def get_solution_links(driver, base_url, page=1):
 def extract_solution_details(driver):
     """ 개별 코드 페이지에서 유저 아이디, 코드 내용, 언어 정보 가져오기 """
     try:
-        user_id_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "tbody tr td a[href^='/user/']"))
-        )
-        user_id = user_id_element.text
+        # 진짜 제출자의 id
+        # user_id_element = WebDriverWait(driver, 10).until(
+        #     EC.presence_of_element_located((By.CSS_SELECTOR, "tbody tr td a[href^='/user/']"))
+        # )
+        # user_id = user_id_element.text
+
+        # bkId
+        current_url = driver.current_url  # 현재 페이지 URL 가져오기
+        user_id = current_url.rstrip('/').split("/")[-1]
 
         code_element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "textarea[name='source']"))
@@ -140,10 +145,33 @@ def save_solution_to_file(problem_id, user_id, code_text, mime_type, base_save_d
     return file_path, file_extension
 
 # ✅ 5. API 전송 함수
-def send_solution_to_api(problem_id, file_path, file_extension, user_id):
-    """ API로 솔루션 전송 """
-    # 여기에 db_controller API 호출 로직 추가
-    print(f"API 전송: 문제 {problem_id}, 파일 {file_path}, 유저 {user_id}")
+def send_solution_to_api(problem_id, user_id, code, mime_type):
+    """ ✅ Spring Boot 서버로 정답 코드 전송 """
+    load_dotenv()
+    api_url = os.getenv("SIMILARITY_SAVE_API_URL")
+
+    file_extension, language = get_file_extension_and_folder(mime_type)
+    file_path = "solutions/" + problem_id + "/" + file_extension + "/" + user_id+"." + file_extension
+
+    payload = {
+        "problemId": problem_id,
+        "filePath": file_path,
+        "language": language,
+        "userId": user_id,
+        "code": code,
+    }
+
+    try:
+        response = requests.post(api_url, json=payload, timeout=10)
+        if response.status_code != 200:
+            print(f"❌ API 전송 실패: {response.status_code} {response.text}")
+            return False
+        else:
+            print(f"✅ API 전송 성공: {response.status_code} {response.text}")
+            return True
+    except requests.exceptions.RequestException as e:
+        print(f"🚨 요청 오류: {e}")
+        return False
 
 
 # 각 코드 블록을 보기 좋게 출력하는 함수
@@ -170,7 +198,7 @@ def full_scrape_process(driver, problem_id, language_id):
     for solution in solutions:
         file_path, file_extension = save_solution_to_file(problem_id, solution["user_id"], solution["code"], solution["mime_type"])
         # API로 전송
-        send_solution_to_api(problem_id, file_path, file_extension, solution["user_id"])
+        send_solution_to_api(problem_id, solution["user_id"], solution["code"], solution["mime_type"])
 
 # 메인 코드
 if __name__ == "__main__":
@@ -179,13 +207,13 @@ if __name__ == "__main__":
     driver = webdriver.Chrome()  # 크롬 드라이버 경로를 환경 변수에 추가했거나, 직접 지정해야 합니다.
     load_dotenv()
 
-    problem_id = "1027"
+    problem_id = "1028"
 
     searchFormat = convertToGithubSearchFormat(problem_id)
     code, submitLang = findAnswerFromGithub(searchFormat)
 
     if code:
-        success = login_and_submit_code(driver, problem_id, submitLang, code)
+        success = ScrapingService.login_and_submit_code(driver, problem_id, submitLang, code)
         print(f"제출 성공: {success}")
     else:
         print("코드를 가져오는데 실패했습니다.")

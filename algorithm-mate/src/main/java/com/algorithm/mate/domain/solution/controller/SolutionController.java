@@ -5,6 +5,7 @@ import com.algorithm.mate.domain.solution.entity.Solution;
 import com.algorithm.mate.domain.solution.service.SolutionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +28,13 @@ public class SolutionController {
     }
 
     @PostMapping("/save")
-    public String handleSolution(@RequestBody SolutionRequestDto request){
+    public ResponseEntity<String> handleSolution(@RequestBody SolutionRequestDto request){
 
-        log.info("handle problemID: {}", request.getProblemId());
-        log.info(request.getFilePath());
-        log.info(request.getLanguage());
-        log.info("handle userId: {}", request.getUserId());
+        log.info("📌 문제 ID: {}", request.getProblemId());
+        log.info("📌 파일 경로: {}", request.getFilePath());
+        log.info("📌 언어: {}", request.getLanguage());
+        log.info("📌 유저 ID: {}", request.getUserId());
+//        log.info("📌 코드 내용: \n{}", request.getCode());  // ✅ 코드 출력
 
         // DTO를 entity로 변환
         Solution solution = new Solution(
@@ -45,6 +47,6 @@ public class SolutionController {
         // 데이터베이스에 저장
         solutionService.saveOrUpdateSolution(solution);
 
-        return "Code submitted successfully!";
+        return ResponseEntity.ok("✅ Code submitted successfully!");
     }
 }
