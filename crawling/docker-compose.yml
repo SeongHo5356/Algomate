@@ -1,13 +1,37 @@
+version: "3.8"
+
 services:
   redis:
-    image: redis:latest
+    image: "redis:latest"
     container_name: redis_celery
-    restart: always
     ports:
       - "6379:6379"
-    volumes:
-      - redis_data:/data
+    networks:
+      - celery_network
 
-volumes:
-  redis_data:
-    driver: local
+  fastapi_app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis_celery:6379/0
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    networks:
+      - celery_network
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis_celery:6379/0
+    command: ["celery", "-A", "workers.scraping_tasks", "worker", "--loglevel=info"]
+    networks:
+      - celery_network
+
+networks:
+  celery_network:
