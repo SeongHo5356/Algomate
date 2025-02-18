@@ -1,3 +1,5 @@
+import logging
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -38,11 +40,11 @@ def tryCookieThenLogin(driver):
             print("✅ 새로 로그인 성공")
             return True
         else:
-            print("🚨 로그인 실패")
+            print("🚨 로그인 실패1")
             return False
 
     except Exception as e:
-        print(f"🚨 로그인 중 오류 발생: {e}")
+        logging.error(f"🚨 로그인 중 오류 발생: {e}")
         return False
 
 
@@ -89,7 +91,7 @@ def login(driver):
         return True
 
     except Exception as e:
-        print(f"로그인 실패: {e}")
+        logging.error(f"쿠키 로드 실패1: {e}")
         return False
 
 # 로그인 시 쿠키 사용 함수
@@ -104,7 +106,7 @@ def login_using_cookies(driver):
         print("이미 로그인된 상태입니다.")
         return True
     except Exception as e:
-        print(f"쿠키 로드 실패: {e}")
+        logging.error(f"쿠키 로드 실패1: {e}")
         return False
 
 # 백준에 정답을 제출하는 코드

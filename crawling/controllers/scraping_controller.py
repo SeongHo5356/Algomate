@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from services.scraping_service import ScrapingService
-from selenium import webdriver
-from dotenv import load_dotenv
+from workers.scraping_tasks import scrape_baekjoon
+from celery.result import AsyncResult
+from config.CeleryConfig import celery_app
 
 router = APIRouter()
 
@@ -10,20 +10,22 @@ class ScrapeRequest(BaseModel):
     problem_id: str
     language_id: str
 
-
 @router.post("/scrape")
 async def start_scraping(request: ScrapeRequest):
     """
-    ✅ 백준 문제 크롤링 및 정답 수집 API
+    ✅ 크롤링을 Celery 비동기 작업으로 실행
     """
-    load_dotenv()
+    task = scrape_baekjoon.delay(request.problem_id, request.language_id)  # ✅ 비동기 실행
+    return {"message": "✅ 크롤링 작업이 시작되었습니다.", "task_id": task.id}
 
-    try:
-        driver = webdriver.Chrome()  # 크롬 드라이버 실행
-        ScrapingService.fullScrapeProcess(driver, request.problem_id, request.language_id)
-        driver.quit()  # 크롤링 후 드라이버 종료
-        return {"message": "✅ 크롤링 완료", "problem_id": request.problem_id}
 
-    except Exception as e:
-        driver.quit()  # 에러 발생 시 드라이버 종료
-        raise HTTPException(status_code=500, detail=f"🚨 크롤링 중 오류 발생: {str(e)}")
+@router.get("/task-status/{task_id}")
+def get_task_status(task_id: str):
+    """ ✅ Celery 작업 상태 조회 API """
+    result = AsyncResult(task_id, app=celery_app)
+
+    return {
+        "task_id": task_id,
+        "status": result.status,  # PENDING, STARTED, SUCCESS, FAILURE 등
+        "result": result.result if result.ready() else None,  # 작업 결과 (완료된 경우)
+    }
