@@ -8,6 +8,7 @@ load_dotenv()
 BROKER_URL = "redis://localhost:6379/0"
 BACKEND_URL = "redis://localhost:6379/0"
 
+
 celery_app = Celery(
     "scraper",
     broker=BROKER_URL,
