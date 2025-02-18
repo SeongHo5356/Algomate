@@ -50,7 +50,6 @@ def tryCookieThenLogin(driver):
 
 def login(driver):
     driver.get("https://www.acmicpc.net/login")
-
     # 로그인 정보
     load_dotenv()
     username = os.getenv("BAEKJOON_USERNAME")
@@ -96,7 +95,6 @@ def login(driver):
 
 # 로그인 시 쿠키 사용 함수
 def login_using_cookies(driver):
-    driver.get("https://www.acmicpc.net")
     try:
         load_cookies(driver)  # 쿠키 불러오기
         driver.get("https://www.acmicpc.net/login")  # 페이지를 새로고침하여 로그인된 상태 확인

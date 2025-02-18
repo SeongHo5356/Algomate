@@ -60,7 +60,6 @@ class ScrapingService:
         """ 이미 맞춘 적 있는 문제일 때 -> 바로 크롤링 """
         from scraping.ScarpeAnswers import scrape_solutions, save_solution_to_file, send_solution_to_api
 
-
         # ✅ 1. 로그인 & 정답 제출
         success = tryCookieThenLogin(driver)
         print(f"✅ 로그인: {success}")
@@ -82,8 +81,10 @@ class ScrapingService:
         solvedStatus = check_problem_solved(problem_id)
 
         if solvedStatus:
+            print("✅ 해당 문제 푼적 있음")
             ScrapingService.scrapeWhenServerSolved(driver, problem_id, language_id)
         else :
+            print("🚨 해당 문제 푼적 없음")
             ScrapingService.scrapeWhenServerNotSolved(driver, problem_id, language_id)
 
 

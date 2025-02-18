@@ -148,7 +148,7 @@ def save_solution_to_file(problem_id, user_id, code_text, mime_type, base_save_d
 def send_solution_to_api(problem_id, user_id, code, mime_type):
     """ ✅ Spring Boot 서버로 정답 코드 전송 """
     load_dotenv()
-    api_url = os.getenv("SIMILARITY_SAVE_API_URL")
+    api_url = os.getenv("SIMILARITY_SAVE_API_URL_IN_DOCKER")
 
     file_extension, language = get_file_extension_and_folder(mime_type)
     file_path = "solutions/" + problem_id + "/" + file_extension + "/" + user_id+"." + file_extension
