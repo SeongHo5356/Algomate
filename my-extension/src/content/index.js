@@ -32,6 +32,7 @@ import { createNextAndSimilarButtons } from '../ui/buttons.js';
                 if (mimeType) {
                     if (mimeType.includes("c++")) language = "C++";
                     else if (mimeType.includes("python")) language = "Python";
+                    else if (mimeType.includes("javascript")) language = "JavaScript";
                     else if (mimeType.includes("java")) language = "Java";
                     else if (mimeType.includes("c")) language = "C";
                 }
