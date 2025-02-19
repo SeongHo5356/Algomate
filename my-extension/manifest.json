@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Algomate",
+  "version": "1.0",
+  "description": "웹 페이지 데이터를 크롤링하고 DOM을 조작합니다.",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.acmicpc.net/problem/*",
+        "https://www.acmicpc.net/submit/*"
+      ],
+      "js": ["dist/index.bundle.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sample1.py",
+        "sample2.py",
+        "sample3.cpp",
+        "sample4.cpp"
+      ],
+      "matches": ["https://www.acmicpc.net/*"]
+    }
+  ]
+}
