@@ -4,6 +4,7 @@ import com.algorithm.mate.domain.problemData.dto.ProblemDataRequestDto;
 import com.algorithm.mate.domain.submission.dto.SubmissionRequestDto;
 import com.algorithm.mate.domain.submission.entity.Submission;
 import com.algorithm.mate.domain.submission.service.SubmissionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/submission")
 public class SubmissionController {
@@ -32,6 +34,8 @@ public class SubmissionController {
                 request.getUserId(),
                 request.getCode()
         );
+
+        log.info("내 제출 페이지 접근 : problem_id : {}, language : {}, bkId : {}", request.getProblemId(), request.getLanguage(), request.getBkId());
 
         // 데이터베이스에 저장
         submissionService.saveOrUpdateSubmission(submission);
