@@ -9,7 +9,7 @@ export async function sendProblemData(problemId, pageContent, userId) {
             userId: userId
         })
     });
-    return response.json();
+    return response.text();
 }
 
 export async function submitCode(problemId, bkId, codeContent, userId, language) {
@@ -24,7 +24,7 @@ export async function submitCode(problemId, bkId, codeContent, userId, language)
             bkId: bkId
         })
     });
-    return response.json();
+    return response.text();
 }
 
 export async function fetchSimilarCodeUrls(submissionId) {
