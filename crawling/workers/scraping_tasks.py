@@ -6,10 +6,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import logging
-import tempfile
-import uuid
-import time
-import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -42,7 +38,6 @@ def scrape_baekjoon(problem_id, language_id):
         logger.info(f"🚀 크롤링 시작: 문제 ID={problem_id}, 언어 ID={language_id}")
 
         driver = get_driver()
-        print(1)
         ScrapingService.fullScrapeProcess(driver, problem_id, language_id)
 
         logger.info(f"✅ 크롤링 완료: 문제 ID={problem_id}")
