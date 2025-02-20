@@ -16,18 +16,18 @@ load_dotenv()
 COOKIE_PATH = os.getenv("COOKIE_PATH")
 
 # 쿠키 저장 함수
-def save_cookies(driver, filename="cookies.pkl"):
+def save_cookies(driver):
     os.makedirs(os.path.dirname(COOKIE_PATH), exist_ok=True) # ✅ 디렉토리 없으면 생성
     print(f"로그인 성공 // Saving cookies to {COOKIE_PATH}")
-    with open(filename, "wb") as f:
+    with open(COOKIE_PATH, "wb") as f:
         pickle.dump(driver.get_cookies(), f)
 
 # 쿠키 불러오기 함수
-def load_cookies(driver, filename=COOKIE_PATH):
-    if not os.path.exists(filename):
+def load_cookies(driver):
+    if not os.path.exists(COOKIE_PATH):
         print("🚨 쿠키 파일이 존재하지 않습니다. 로그인이 필요합니다.")
         return False
-    with open(filename, "rb") as f:
+    with open(COOKIE_PATH, "rb") as f:
         cookies = pickle.load(f)
         for cookie in cookies:
             driver.add_cookie(cookie)
