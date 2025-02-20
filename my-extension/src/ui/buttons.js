@@ -19,34 +19,50 @@ export function createNextAndSimilarButtons() {
         return;
     }
 
-    // 버튼 스타일 설정 함수
-    const setButtonStyle = (button) => {
-        nextButton.style.marginLeft = '10px';
-        nextButton.style.padding = '5px 10px';
-        nextButton.style.fontSize = '14px';
-        nextButton.style.cursor = 'pointer';
-    }
+// 공통 버튼 스타일 함수 (margin 설정 추가)
+    const setButtonStyle = (button, marginLeft = '5px') => {
+        button.style.marginLeft = marginLeft; // 개별 마진 설정 가능
+        button.style.padding = '6px 12px'; // 조화로운 패딩
+        button.style.fontSize = '13px'; // 기본 글꼴 크기
+        button.style.cursor = 'pointer';
+        button.style.backgroundColor = '#ffffff'; // 페이지 기본 배경색
+        button.style.border = 'none'; // 테두리 제거
+        button.style.borderRadius = '4px'; // 모서리를 부드럽게
+        button.style.color = '#0076C0'; // 페이지 텍스트 색상
+        button.style.fontFamily = 'inherit'; // 페이지와 동일한 글꼴
+        button.style.outline = 'none'; // 포커스 테두리 제거
+        button.style.transition = 'background-color 0.3s'; // 호버 시 부드러운 전환
+
+        // 호버 효과
+        button.addEventListener('mouseover', () => {
+            button.style.textDecoration = 'underline';
+        });
+        button.addEventListener('mouseout', () => {
+            button.style.textDecoration = 'none';
+        });
+    };
 
     // "다음 파일" 버튼 생성
     const nextButton = document.createElement('button');
     nextButton.id = 'next-file-button';
     nextButton.textContent = '다음 파일';
-    setButtonStyle(nextButton);
+    setButtonStyle(nextButton, '12px');
 
     // "유사한 코드 살펴보기" 버튼 생성
     const similarButton = document.createElement('button');
     similarButton.id = 'similar-code-button';
     similarButton.textContent = '내 코드 제출하기';
-    setButtonStyle(similarButton);
+    setButtonStyle(similarButton, '0px');
 
     // "코드 저장하기" 버튼 생성 (새 버튼 추가)
     const resultButton = document.createElement('button');
     resultButton.id = 'save-code-button';
     resultButton.textContent = '결과 살펴보기';
-    setButtonStyle(resultButton);
+    setButtonStyle(resultButton, '0px');
 
     // 버튼을 언어 설정 버튼의 부모에 추가
     languageSettingLink.parentNode.appendChild(nextButton);
+    languageSettingLink.parentNode.appendChild(similarButton);
     languageSettingLink.parentNode.appendChild(resultButton);
 
     // "다음 파일" 버튼 클릭 이벤트
