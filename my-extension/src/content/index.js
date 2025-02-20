@@ -1,6 +1,6 @@
 // src/content/index.js
 import { sendProblemData, submitCode } from '../api/api.js';
-import { createNextAndSimilarButtons } from '../ui/buttons.js';
+import {createButtons, createNextAndSimilarButtons} from '../ui/buttons.js';
 
 (function() {
     const currentUrl = window.location.href;
@@ -54,7 +54,7 @@ import { createNextAndSimilarButtons } from '../ui/buttons.js';
                 console.log('URL 조건에 맞지 않아 스크립트를 실행하지 않습니다.');
                 return;
             }
-            createNextAndSimilarButtons();
+            createButtons();
         } catch (error) {
             console.error('콘텐츠 스크립트 실행 중 오류:', error);
         }

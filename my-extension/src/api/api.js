@@ -27,6 +27,19 @@ export async function submitCode(problemId, bkId, codeContent, userId, language)
     return response.text();
 }
 
+export async function requestSimilarityCalculate(bkId, problemId, language) {
+    const response = await fetch('http://localhost:8080/api/v2/similarity/compare', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            bkId: bkId.toString(),
+            problemId: problemId,
+            language: language
+        })
+    })
+    return response.text();
+}
+
 export async function fetchSimilarCodeUrls(submissionId) {
     try {
         const response = await fetch(`http://localhost:8080/api/v2/similarity/select5?bkId=${submissionId}`, {
