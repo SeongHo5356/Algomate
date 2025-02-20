@@ -121,8 +121,6 @@ def scrape_solutions(driver, problem_id, language_id):
                 print("StaleElementReferenceException 발생, 다음 코드로 넘어갑니다.")
                 continue
 
-    print(solutions)
-
     return solutions
 
 

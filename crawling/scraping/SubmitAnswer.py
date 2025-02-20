@@ -12,14 +12,22 @@ from github.ConvertToGithubSearchFormat import convertToGithubSearchFormat
 from github.GithubFindAnswer import findAnswerFromGithub
 import time
 
+load_dotenv()
+COOKIE_PATH = os.getenv("COOKIE_PATH")
+
 # 쿠키 저장 함수
-def save_cookies(driver, filename="cookies.pkl"):
-    with open(filename, "wb") as f:
+def save_cookies(driver):
+    os.makedirs(os.path.dirname(COOKIE_PATH), exist_ok=True) # ✅ 디렉토리 없으면 생성
+    print(f"로그인 성공 // Saving cookies to {COOKIE_PATH}")
+    with open(COOKIE_PATH, "wb") as f:
         pickle.dump(driver.get_cookies(), f)
 
 # 쿠키 불러오기 함수
-def load_cookies(driver, filename="cookies.pkl"):
-    with open(filename, "rb") as f:
+def load_cookies(driver):
+    if not os.path.exists(COOKIE_PATH):
+        print("🚨 쿠키 파일이 존재하지 않습니다. 로그인이 필요합니다.")
+        return False
+    with open(COOKIE_PATH, "rb") as f:
         cookies = pickle.load(f)
         for cookie in cookies:
             driver.add_cookie(cookie)
@@ -40,7 +48,7 @@ def tryCookieThenLogin(driver):
             print("✅ 새로 로그인 성공")
             return True
         else:
-            print("🚨 로그인 실패1")
+            print("🚨 로그인 실패")
             return False
 
     except Exception as e:
@@ -85,17 +93,19 @@ def login(driver):
             EC.presence_of_element_located((By.CLASS_NAME, "username"))
         )
 
+        logging.error("로그인 성공, 쿠키 저장 프로세스 시작")
         save_cookies(driver) #로그인 성공하고 쿠키 저장
-        print("로그인 성공")
+        logging.error("로그인 성공, 쿠키 저장 성공")
         return True
 
     except Exception as e:
-        logging.error(f"쿠키 로드 실패1: {e}")
+        logging.error(f"ID/PW로 로그인 실패: {e}")
         return False
 
 # 로그인 시 쿠키 사용 함수
 def login_using_cookies(driver):
     try:
+        driver.get("https://www.acmicpc.net/login")  # 페이지를 새로고침하여 로그인된 상태 확인
         load_cookies(driver)  # 쿠키 불러오기
         driver.get("https://www.acmicpc.net/login")  # 페이지를 새로고침하여 로그인된 상태 확인
         WebDriverWait(driver, 10).until(
@@ -103,8 +113,9 @@ def login_using_cookies(driver):
         )
         print("이미 로그인된 상태입니다.")
         return True
+
     except Exception as e:
-        logging.error(f"쿠키 로드 실패1: {e}")
+        logging.error(f"쿠키로 로그인 실패: {e}")
         return False
 
 # 백준에 정답을 제출하는 코드
