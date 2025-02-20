@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  ### Redis (Celery 브로커)
+  redis:
+    image: "redis:latest"
+    container_name: redis_celery
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+  ### FastAPI 서버 (크롤링 서비스)
+  fastapi_app:
+    build: ./crawling
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis_celery:6379/0
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    networks:
+      - app_network
+
+  ### Celery Worker (비동기 크롤링 실행)
+  celery_worker:
+    build: ./crawling
+    container_name: celery_worker
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis_celery:6379/0
+    command: ["celery", "-A", "workers.scraping_tasks", "worker", "--loglevel=info"]
+    networks:
+      - app_network
+  
+  ### Spring Boot 서버 (메인 백엔드)
+  spring_boot:
+    build: ./algorithm-mate
+    container_name: spring_boot
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fastapi_app
+      - redis
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/mydatabase
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+    networks:
+      - app_network
+  
+  ### 🌎 NGINX (API Gateway & Reverse Proxy)
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - spring_boot
+      - fastapi_app
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
