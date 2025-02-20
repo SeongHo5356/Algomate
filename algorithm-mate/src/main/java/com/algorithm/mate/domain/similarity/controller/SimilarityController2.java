@@ -1,5 +1,6 @@
 package com.algorithm.mate.domain.similarity.controller;
 
+import com.algorithm.mate.domain.similarity.dto.SimilarityCalculateRequestDto;
 import com.algorithm.mate.domain.similarity.exception.CustomExitException;
 import com.algorithm.mate.domain.similarity.service.SimilarityService;
 import com.algorithm.mate.domain.similarity.service.SimilarityService2;
@@ -28,11 +29,11 @@ public class SimilarityController2 {
 
     // 유사도 계산 요청 처리
     @PostMapping("/compare")
-    public String similarityCalculate(@RequestParam String bkId,
-                                      @RequestParam String problemId,
-                                      @RequestParam String language) throws CustomExitException {
+    public ResponseEntity<String> similarityCalculate(@RequestBody SimilarityCalculateRequestDto requestDto) throws CustomExitException {
 
-        return similarityService.similarityCalculate(bkId, problemId, language);
+        similarityService.similarityCalculate(requestDto.getBkId(), requestDto.getProblemId(), requestDto.getLanguage());
+
+        return ResponseEntity.ok("✅ code similarity Calculated Successfully!");
     }
 
     // 유사 코드 목록 조회
