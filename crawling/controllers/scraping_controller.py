@@ -21,11 +21,15 @@ async def start_scraping(request: ScrapeRequest):
 
 @router.get("/task-status/{task_id}")
 def get_task_status(task_id: str):
-    """ ✅ Celery 작업 상태 조회 API """
+    """ ✅ Celery 작업 상태 조회 API - Redis에서 직접 데이터 가져오기 """
     result = AsyncResult(task_id, app=celery_app)
+
+    # ✅ 백엔드에서 직접 데이터 가져오기
+    task_meta = result.backend.get_task_meta(task_id)
 
     return {
         "task_id": task_id,
-        "status": result.status,  # PENDING, STARTED, SUCCESS, FAILURE 등
-        "result": result.result if result.ready() else None,  # 작업 결과 (완료된 경우)
+        "status": task_meta.get("status"),  # PENDING, STARTED, SUCCESS, FAILURE 등
+        "result": task_meta.get("result"),  # 작업 결과
+        "date_done": task_meta.get("date_done"),  # 완료 시간
     }

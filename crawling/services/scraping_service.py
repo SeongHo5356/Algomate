@@ -58,7 +58,7 @@ class ScrapingService:
     @staticmethod
     def scrapeWhenServerSolved(driver, problem_id, language_id):
         """ 이미 맞춘 적 있는 문제일 때 -> 바로 크롤링 """
-        from scraping.ScarpeAnswers import scrape_solutions, save_solution_to_file, send_solution_to_api
+        from scraping.ScarpeAnswers import scrape_solutions, send_solution_to_api
 
         # ✅ 1. 로그인 & 정답 제출
         success = tryCookieThenLogin(driver)
