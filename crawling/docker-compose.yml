@@ -18,8 +18,6 @@ services:
       - ./cookie:/app/cookie
     depends_on:
       - redis
-    environment:
-      - CELERY_BROKER_URL=redis://redis_celery:6379/0
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     networks:
       - celery_network
@@ -31,8 +29,6 @@ services:
       - ./cookie:/app/cookie
     depends_on:
       - redis
-    environment:
-      - CELERY_BROKER_URL=redis://redis_celery:6379/0
     command: ["celery", "-A", "workers.scraping_tasks", "worker", "--loglevel=info"]
     networks:
       - celery_network
