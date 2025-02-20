@@ -20,6 +20,10 @@ def get_driver():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_extension("/app/crx/auto_recaptcha_solver.crx")
     chrome_options.add_extension("/app/crx/recaptcha_autoclick.crx")
+
+    # 외부 브라우저를 통해 인터페이스 제공
+    # chrome_options.add_argument("--remote-debugging-port=9222")  # 원격 디버깅 활성화
+
     # User-Agent 설정 (일반적인 브라우저로 설정)
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
 
