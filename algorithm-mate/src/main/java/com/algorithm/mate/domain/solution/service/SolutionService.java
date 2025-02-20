@@ -7,11 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
 @Service
 public class SolutionService {
+
+    //파일 저장 경로
+    private static final String BASE_PATH = "src/main/resources/";
 
     private final SolutionRepository solutionRepository;
 
@@ -24,7 +30,7 @@ public class SolutionService {
         return solutionRepository.findAllByUserId(problemId);
     }
 
-    public Solution saveOrUpdateSolution(Solution solution) {
+    public Solution saveOrUpdateSolution(Solution solution) throws IOException {
 
         Solution existingSolution = solutionRepository.findByUserIdAndLanguage(solution.getUserId(),solution.getLanguage());
 
@@ -39,10 +45,27 @@ public class SolutionService {
         }
     }
 
-    public Solution saveSolution(Solution solution) {
-        return solutionRepository.save(solution);
-    }
+    public Solution saveSolution(Solution solution) {return solutionRepository.save(solution);}
 
+    public void saveCodeToFile(String problemId, String filePath, String language, String code) throws IOException {
+
+        // 확장자 결정
+        String extension = getFileExtension(language);
+
+        // 파일 경로 생성
+        String fileSavePath = BASE_PATH + filePath;
+
+        // 디렉토리 생성
+        File directory = new File(BASE_PATH+ "solutions/" + problemId + "/" + extension);
+        if (!directory.exists()) {
+            directory.mkdirs();
+            log.info("새로운 폴더 생성 : {}", directory.getAbsolutePath());
+        }
+        // 파일에 코드 저장
+        try (FileWriter writer = new FileWriter(fileSavePath)) {
+            writer.write(code);
+        }
+    }
     // 현재 요청받은 문제번호와 언어를 기반으로 기존에 크롤링 된 답변들이 100개 이상 존재하는 지 검증
     // 1개라도 있는지 검증 solutionRepository.existsByProblemIdAndLanguage
     // 100개 이상 있는지 검증 solutionRepository.hsaAtLeast100Solutions()
@@ -50,5 +73,20 @@ public class SolutionService {
         long count = solutionRepository.countByProblemIdAndLanguage(problemId,language);
 
         return count >= 100;
+    }
+
+    public String getFileExtension(String language) {
+        switch(language.toLowerCase()){
+            case "java":
+                return "java";
+            case "python":
+                return "py";
+            case "c++":
+                return "cpp";
+            case "c":
+                return "c";
+            default:
+                throw new IllegalArgumentException("Unsupported language: " + language);
+        }
     }
 }

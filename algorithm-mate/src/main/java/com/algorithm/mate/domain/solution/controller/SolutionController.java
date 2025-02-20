@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class SolutionController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> handleSolution(@RequestBody SolutionRequestDto request){
+    public ResponseEntity<String> saveSolution(@RequestBody SolutionRequestDto request) throws IOException {
 
         log.info("📌 문제 ID: {}", request.getProblemId());
         log.info("📌 파일 경로: {}", request.getFilePath());
@@ -43,6 +44,9 @@ public class SolutionController {
                 request.getLanguage(),
                 request.getUserId()
         );
+
+        // 파일로 저장
+        solutionService.saveCodeToFile(request.getProblemId(), request.getFilePath(), request.getLanguage(), request.getCode());
 
         // 데이터베이스에 저장
         solutionService.saveOrUpdateSolution(solution);
