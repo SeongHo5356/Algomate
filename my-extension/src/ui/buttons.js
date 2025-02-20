@@ -19,27 +19,35 @@ export function createNextAndSimilarButtons() {
         return;
     }
 
+    // 버튼 스타일 설정 함수
+    const setButtonStyle = (button) => {
+        nextButton.style.marginLeft = '10px';
+        nextButton.style.padding = '5px 10px';
+        nextButton.style.fontSize = '14px';
+        nextButton.style.cursor = 'pointer';
+    }
+
     // "다음 파일" 버튼 생성
     const nextButton = document.createElement('button');
     nextButton.id = 'next-file-button';
     nextButton.textContent = '다음 파일';
-    nextButton.style.marginLeft = '10px';
-    nextButton.style.padding = '5px 10px';
-    nextButton.style.fontSize = '14px';
-    nextButton.style.cursor = 'pointer';
+    setButtonStyle(nextButton);
 
     // "유사한 코드 살펴보기" 버튼 생성
     const similarButton = document.createElement('button');
     similarButton.id = 'similar-code-button';
-    similarButton.textContent = '유사한 코드 살펴보기';
-    similarButton.style.marginLeft = '10px';
-    similarButton.style.padding = '5px 10px';
-    similarButton.style.fontSize = '14px';
-    similarButton.style.cursor = 'pointer';
+    similarButton.textContent = '내 코드 제출하기';
+    setButtonStyle(similarButton);
+
+    // "코드 저장하기" 버튼 생성 (새 버튼 추가)
+    const resultButton = document.createElement('button');
+    resultButton.id = 'save-code-button';
+    resultButton.textContent = '결과 살펴보기';
+    setButtonStyle(resultButton);
 
     // 버튼을 언어 설정 버튼의 부모에 추가
     languageSettingLink.parentNode.appendChild(nextButton);
-    languageSettingLink.parentNode.appendChild(similarButton);
+    languageSettingLink.parentNode.appendChild(resultButton);
 
     // "다음 파일" 버튼 클릭 이벤트
     nextButton.addEventListener('click', async (event) => {
@@ -51,7 +59,7 @@ export function createNextAndSimilarButtons() {
     });
 
     // "유사한 코드 살펴보기" 버튼 클릭 이벤트
-    similarButton.addEventListener('click', async (event) => {
+    resultButton.addEventListener('click', async (event) => {
         event.preventDefault();
         event.stopPropagation();
         if (!isSimilarCodeDisplayed) {
