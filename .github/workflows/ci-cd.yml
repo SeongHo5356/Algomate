@@ -44,11 +44,15 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}  # 예: ubuntu
           key: ${{ secrets.SSH_KEY }}  # PEM 키
           script: |
-            cd algomate/crawling
+            cd /home/ubuntu/algomate/crawling
+            echo "Current directory: $(/home/ubuntu/algomate/crawling)"
+            ls -l
+            cat docker-compose.yml || echo "docker-compose.yml not found"
             export COMPOSE_DOCKER_CLI_BUILD=1
             export DOCKER_BUILDKIT=1
             sed -i 's|image: .*fastapi_app$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|' docker-compose.yml
             sed -i 's|image: .*celery_worker$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|' docker-compose.yml
-            docker-compose pull
-            docker-compose up -d --remove-orphans
-            docker-compose ps
+            docker-compose pull || echo "Pull failed"
+            docker-compose up -d --remove-orphans || echo "Up failed"
+            docker-compose ps || echo "PS failed"
+            docker ps -a
