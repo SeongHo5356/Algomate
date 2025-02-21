@@ -10,10 +10,10 @@ services:
       - celery_network
 
   fastapi_app:
-    build: .
+    image: "leosunghojung/crawling:latest"
     container_name: fastapi_app
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - ./cookie:/app/cookie
     depends_on:
@@ -23,7 +23,7 @@ services:
       - celery_network
 
   celery_worker:
-    build: .
+    image: "leosunghojung/crawling:latest"
     container_name: celery_worker
     volumes:
       - ./cookie:/app/cookie
