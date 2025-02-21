@@ -20,3 +20,8 @@ springdoc:
     enabled: true
   swagger-ui:
     path: /swagger-ui.html
+
+fastapi:
+  base-url: "http://localhost:8000"  # FastAPI 서버 URL
+
+
