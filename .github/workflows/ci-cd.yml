@@ -42,18 +42,19 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}  # 예: 13.239.190.188
-          username: ${{ secrets.SSH_USERNAME }}  # 예: ubuntu
-          key: ${{ secrets.SSH_KEY }}  # PEM 키
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/ubuntu/algomate/crawling
-            echo "Current directory: $(/home/ubuntu/algomate/crawling)"
+            echo "Current directory: $(pwd)"
             ls -l
             cat docker-compose.yml || echo "docker-compose.yml not found"
             export COMPOSE_DOCKER_CLI_BUILD=1
             export DOCKER_BUILDKIT=1
-            sed -i 's|image: .*fastapi_app$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|' docker-compose.yml
-            sed -i 's|image: .*celery_worker$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|' docker-compose.yml
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}  # 변수 설정 추가
+            sed -i "s|image: .*fastapi_app$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
+            sed -i "s|image: .*celery_worker$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
             docker-compose pull || echo "Pull failed"
             docker-compose up -d --remove-orphans || echo "Up failed"
             docker-compose ps || echo "PS failed"
