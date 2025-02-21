@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ✅ Redis 컨테이너 이름과 일치하도록 수정
-BROKER_URL = "redis://localhost:6379/0"
-BACKEND_URL = "redis://localhost:6379/0"
+BROKER_URL = "redis://redis_celery:6379/0"
+BACKEND_URL = "redis://redis_celery:6379/0"
 
 # BROKER_URL = os.getenv("CELERY_BROKER_URL")
 # BACKEND_URL = os.getenv("CELERY_RESULT_BACKEND")
