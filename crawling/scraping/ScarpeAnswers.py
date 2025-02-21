@@ -96,7 +96,7 @@ def scrape_solutions(driver, problem_id, language_id):
     for page in range(1, 2):  # 현재 1페이지만 크롤링
         code_links = get_solution_links(driver, base_url, page)
 
-        print(code_links)
+        print(page, "번째 페이지 링크 수집 완료")
 
         for i in range(len(code_links)):
             try:
