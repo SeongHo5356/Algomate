@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'crawling/**'  # crawling 폴더 변경 시만 실행
+      - '.github/workflows/**' # 워크플로우 파일 변경도 포함
+  workflow_dispatch: # 수동 실행 추가    
 
 jobs:
   build-and-deploy:
