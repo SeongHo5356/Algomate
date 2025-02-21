@@ -1,6 +1,6 @@
 // src/content/index.js
 import { sendProblemData, submitCode } from '../api/api.js';
-import {createButtons, createNextAndSimilarButtons} from '../ui/buttons.js';
+import {createButtons} from '../ui/buttons.js';
 
 (function() {
     const currentUrl = window.location.href;

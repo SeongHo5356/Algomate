@@ -106,14 +106,24 @@ export function createButtons() {
     resultButton.addEventListener('click', async (event) => {
         event.preventDefault();
         event.stopPropagation();
+
         if (!isSimilarCodeDisplayed) {
             const submissionId = getSubmissionIdFromUrl();
             const fileUrls = await fetchSimilarCodeUrls(submissionId);
             console.log('받은 유사 코드 파일 경로들:', fileUrls);
+
             if (fileUrls.length > 0) {
                 externalFileUrls = fileUrls;
                 currentFileIndex = 0;
                 await displayExternalFileContent(externalFileUrls[currentFileIndex]);
+
+                // 코드 하이라이팅 적용
+                if (window.Prism) {
+                    Prism.highlightAll();
+                } else {
+                    loadPrismJS(() => Prism.highlightAll());
+                }
+
                 isSimilarCodeDisplayed = true;
             } else {
                 console.log('유사한 코드가 없습니다.');

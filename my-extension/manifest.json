@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Algomate",
-  "version": "1.0",
+  "version": "2.0",
   "description": "웹 페이지 데이터를 크롤링하고 DOM을 조작합니다.",
   "permissions": [
     "activeTab",
@@ -23,12 +23,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": [
-        "sample1.py",
-        "sample2.py",
-        "sample3.cpp",
-        "sample4.cpp"
-      ],
+      "resources": ["src/lib/prism.js", "src/lib/prism.css"],
       "matches": ["https://www.acmicpc.net/*"]
     }
   ]
