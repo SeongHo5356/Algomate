@@ -22,6 +22,6 @@ springdoc:
     path: /swagger-ui.html
 
 fastapi:
-  base-url: "http://localhost:8000"  # FastAPI 서버 URL
+  base-url: "http://13.239.190.188"  # FastAPI 서버 URL
 
 

@@ -15,8 +15,9 @@ public class CrawlingController {
 
     private final WebClient webClient;
 
-    public CrawlingController(WebClient.Builder webClientBuilder, @Value("${fastapi.base-url}") String fastApiBaseUrl) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8080").build();
+    public CrawlingController(WebClient.Builder webClientBuilder,
+                              @Value("${fastapi.base-url}") String fastApiBaseUrl) {
+        this.webClient = webClientBuilder.baseUrl(fastApiBaseUrl).build();
     }
 
     @GetMapping("/task-status/{taskId}")
