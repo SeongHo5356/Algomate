@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/algomate_db
+    url: jdbc:postgresql://host.docker.internal:5432/algomate_db
     username: algomate
     password: algomate7897
     driver-class-name: org.postgresql.Driver

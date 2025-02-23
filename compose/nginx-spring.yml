@@ -1,5 +1,7 @@
 version: "3.9"
+
 services:
+
   spring-boot:
     image: "leosunghojung/spring-boot:test"
     container_name: spring-boot
@@ -9,7 +11,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=dev
     networks:
       - local_network
 
