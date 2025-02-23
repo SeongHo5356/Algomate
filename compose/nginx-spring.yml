@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+
+  spring-boot:
+    image: "leosunghojung/spring-boot:test"
+    container_name: spring-boot
+    build:
+      context: ../algorithm-mate
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - local_network
+
+  nginx:
+    image: "leosunghojung/nginx:test"
+    container_name: nginx
+    build:
+      context: ../algomate-nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - spring-boot
+    networks:
+      - local_network
+
+networks:
+  local_network:
+    driver: bridge # 사용자 정의 브릿지 네트워크

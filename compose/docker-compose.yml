@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  redis:
+    image: "redis:latest"
+    container_name: redis_celery
+    ports:
+      - "6379:6379"
+    networks:
+      - celery_network
+
+  fastapi_app:
+    image: "leosunghojung/crawling:latest"
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./cookie:/app/cookie
+    depends_on:
+      - redis
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    env_file:
+      - .env
+    networks:
+      - celery_network
+
+  celery_worker:
+    image: "leosunghojung/crawling:latest"
+    container_name: celery_worker
+    volumes:
+      - ./cookie:/app/cookie
+    depends_on:
+      - redis
+    command: ["celery", "-A", "workers.scraping_tasks", "worker", "--loglevel=info", "--uid", "celeryuser"]
+    env_file:
+      - .env
+    networks:
+      - celery_network
+
+  spring-boot:
+    image: "leosunghojung/algomate:latest"  # Private 저장소
+    container_name: spring-boot
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - celery_network
+
+  nginx:
+    image: "leosunghojung/nginx:latest"
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - fastapi_app
+      - spring-boot
+    networks:
+      - celery_network
+
+networks:
+  celery_network:
+    driver: bridge
