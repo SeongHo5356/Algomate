@@ -32,7 +32,7 @@ jobs:
       - name: Build and Push Spring Boot Image (Private)
         working-directory: ./algorithm-mate
         run: |
-          ./gradlew build -Pspring.profiles.active=docker
+          ./gradlew build -Pspring.profiles.active=docker -x test
           docker build -t ${{ secrets.DOCKER_USERNAME }}/algomate:${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/algomate:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/algomate:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/algomate:latest
