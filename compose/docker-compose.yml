@@ -37,7 +37,7 @@ services:
       - celery_network
 
   spring-boot:
-    image: "leosunghojung/spring-boot:test"
+    image: "leosunghojung/algomate:latest"  # Private 저장소
     container_name: spring-boot
     ports:
       - "8080:8080"
@@ -47,13 +47,13 @@ services:
       - celery_network
 
   nginx:
-    image: "leosunghojung/nginx:test"
+    image: "leosunghojung/nginx:latest"
     container_name: nginx
     ports:
       - "80:80"
     depends_on:
       - fastapi_app
-      - spring-boota
+      - spring-boot
     networks:
       - celery_network
 
