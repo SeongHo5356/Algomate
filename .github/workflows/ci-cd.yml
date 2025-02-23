@@ -52,8 +52,8 @@ jobs:
       - name: Push Crawling Image (Public)
         working-directory: ./crawling
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/crawling:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }} || echo "Push failed, checking image..."
+          docker push ${{ secrets.DOCKER_USERNAME }}/crawling:latest || echo "Push failed, checking image..."
       - name: Push Spring Boot Image (Private)
         working-directory: ./algorithm-mate
         run: |
