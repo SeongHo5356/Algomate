@@ -1,0 +1,45 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [main, feat/#21]
+    paths:
+      - 'crawling/**'
+      - 'algorithm-mate/**'
+      - 'algomate-nginx/**'
+  workflow_dispatch:  # 수동 트리거 가능
+  needs: push  # push 작업 의존
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/ubuntu/algomate/crawling
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            echo "Current directory: $(pwd)"
+            ls -l
+            echo "Checking Secrets..."
+            # .env 파일 동적으로 생성
+            echo "Creating .env file..."
+            chmod 600 .env
+            ls -l .env
+            cat .env
+            docker-compose down || echo "Docker compose down failed"
+            sed -i "s|image: .*fastapi_app$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
+            sed -i "s|image: .*celery_worker$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
+            sed -i "s|image: .*spring-boot$|image: ${{ secrets.DOCKER_USERNAME }}/algomate:${{ github.sha }}|g" docker-compose.yml
+            sed -i "s|image: .*nginx$|image: ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.sha }}|g" docker-compose.yml
+            docker-compose pull || echo "Docker compose pull failed"
+            docker-compose up -d --remove-orphans || echo "Docker compose up failed"
+            docker-compose ps || echo "Docker compose ps failed"
+            docker logs fastapi_app || echo "FastAPI logs unavailable"
+            docker logs celery_worker || echo "Celery logs unavailable"
+            docker logs spring-boot || echo "Spring Boot logs unavailable"
+            docker logs nginx || echo "Nginx logs unavailable"
