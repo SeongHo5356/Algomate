@@ -8,7 +8,7 @@ on:
       - 'algorithm-mate/**'
       - 'algomate-nginx/**'
   workflow_dispatch:  # 수동 트리거 가능
-  needs: push  # push 작업 의존
+  needs: push  # push 작업 완료 후 실행
 
 jobs:
   deploy:
