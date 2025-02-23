@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/ubuntu/algomate/crawling
+            cd /home/ubuntu/algomate
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             # .env 파일 동적으로 생성
             chmod 600 .env
