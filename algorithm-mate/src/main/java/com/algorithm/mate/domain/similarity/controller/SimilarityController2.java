@@ -41,7 +41,7 @@ public class SimilarityController2 {
 
         if (!hasEnoughSolutions) {   // 크롤링 돼 있음 -> 크롤링
             // 크롤링 API 엔드포인트 호출
-            String crawlApiUrl = "http://localhost:8000/api/scrape?problem_id=" + requestDto.getProblemId() + "&language_id=" + requestDto.getLanguage();
+            String crawlApiUrl = "http://fastapi_app:8000/api/scrape?problem_id=" + requestDto.getProblemId() + "&language_id=" + requestDto.getLanguage();
             String response = webClientBuilder.build()
                     .get()
                     .uri(uriBuilder -> uriBuilder
