@@ -25,12 +25,12 @@ services:
 
   celery_worker:
     image: "leosunghojung/crawling:latest"
-    container_name: celery_worker
+    container_name: crawling
     volumes:
       - ./cookie:/app/cookie
     depends_on:
       - redis
-    command: ["celery", "-A", "workers.scraping_tasks", "worker", "--loglevel=info", "--uid", "celeryuser"]
+    command: ["celery", "-A", "workers.scraping_tasks", "worker", "--loglevel=info"]
     env_file:
       - .env
     networks:
