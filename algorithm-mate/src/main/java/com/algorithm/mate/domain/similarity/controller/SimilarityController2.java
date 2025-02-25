@@ -56,15 +56,27 @@ public class SimilarityController2 {
             requestBody.put("problem_id", requestDto.getProblemId());
             requestBody.put("language_id", requestDto.getLanguage());
 
-            // WebClient 요청 보내기 (POST + JSON Body)
-            String response = webClientBuilder.build()
-                    .post() // ✅ POST 요청
-                    .uri(URI.create(crawlApiUrl)) // ✅ 직접 URL 지정
-                    .contentType(MediaType.APPLICATION_JSON) // ✅ JSON 데이터 전송
-                    .bodyValue(requestBody) // ✅ JSON 바디 설정
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block(); // 동기 요청 (필요하면 비동기로 변경 가능)
+            WebClient webClient = webClientBuilder
+                    .baseUrl("http://fastapi_app:8000")
+                    .build();
+
+            try {
+                String response = webClientBuilder.build()
+                        .post()
+                        .uri("http://fastapi_app:8000/api/scrape")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(requestBody)
+                        .retrieve()
+                        .bodyToMono(String.class)
+                        .block();
+                System.out.println("Response: " + response);
+
+            } catch (Exception e) {
+                System.err.println("Error during API call: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            String response = "1";
 
             System.out.println("Response from FastAPI: " + response);
 
