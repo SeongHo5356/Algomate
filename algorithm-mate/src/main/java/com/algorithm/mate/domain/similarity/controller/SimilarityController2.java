@@ -46,7 +46,7 @@ public class SimilarityController2 {
         if (!hasEnoughSolutions) {   // 크롤링 돼 있음 -> 크롤링
 
             // 크롤링 API 엔드포인트 호출
-            String crawlApiUrl = "http://fastapi_app:8000/api/scrape";
+            String crawlApiUrl = "http://crawling:8000/api/scrape";
             System.out.println("crawlApiUrl: " + crawlApiUrl);
             System.out.println("requestDto: " + requestDto.getProblemId());
             System.out.println("language_id: " + requestDto.getLanguage());
@@ -57,13 +57,13 @@ public class SimilarityController2 {
             requestBody.put("language_id", requestDto.getLanguage());
 
             WebClient webClient = webClientBuilder
-                    .baseUrl("http://fastapi_app:8000")
+                    .baseUrl("http://crawling:8000")
                     .build();
 
             try {
                 String response = webClientBuilder.build()
                         .post()
-                        .uri("http://fastapi_app:8000/api/scrape")
+                        .uri("http://crawling:8000/api/scrape")
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(requestBody)
                         .retrieve()
