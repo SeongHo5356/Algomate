@@ -46,6 +46,9 @@ public class SimilarityController2 {
 
             // 크롤링 API 엔드포인트 호출
             String crawlApiUrl = "http://fastapi_app:8000/api/scrape";
+            System.out.println("crawlApiUrl: " + crawlApiUrl);
+            System.out.println("requestDto: " + requestDto.getProblemId());
+            System.out.println("language_id: " + requestDto.getLanguage());
 
             // 요청 바디 생성 (JSON 형식)
             Map<String, Object> requestBody = new HashMap<>();
