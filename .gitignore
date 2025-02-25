@@ -44,3 +44,5 @@ __pycache__/
 # 기타
 *.bak
 *.tmp
+
+algomate-key.pem

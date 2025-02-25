@@ -13,7 +13,7 @@
 
 # ⚙️ 서비스 아키텍처
 ![image](https://github.com/user-attachments/assets/dd28ecf1-220d-496c-8bb1-d5da7bf37dbe)
-![image](https://github.com/user-attachments/assets/79b1b50d-2b7a-4ae8-bc86-1217d45d08c9)
+![image](https://github.com/user-attachments/assets/d55c45e3-9af3-4740-8b1a-06649fcffcda)
 
 # 🔎 핵심 기능 소개
 ### 1️⃣ 유사 코드 추천<br>

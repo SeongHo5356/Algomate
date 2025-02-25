@@ -38,4 +38,6 @@ public interface SimilarityService2 {
 
     // 상위 유사 코드 파일 조회 메서드 정의
     List<String> getTopSimilarityFiles(String bkId) throws CustomExitException;
+
+
 }
