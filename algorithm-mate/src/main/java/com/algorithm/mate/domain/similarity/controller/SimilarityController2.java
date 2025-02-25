@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class SimilarityController2 {
             // WebClient 요청 보내기 (POST + JSON Body)
             String response = webClientBuilder.build()
                     .post() // ✅ POST 요청
-                    .uri(crawlApiUrl) // ✅ 직접 URL 지정
+                    .uri(URI.create(crawlApiUrl)) // ✅ 직접 URL 지정
                     .contentType(MediaType.APPLICATION_JSON) // ✅ JSON 데이터 전송
                     .bodyValue(requestBody) // ✅ JSON 바디 설정
                     .retrieve()
