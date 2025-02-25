@@ -6,12 +6,15 @@ import com.algorithm.mate.domain.similarity.service.SimilarityService2;
 import com.algorithm.mate.domain.solution.service.SolutionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -40,18 +43,26 @@ public class SimilarityController2 {
         boolean hasEnoughSolutions = solutionService.hasAtLeast100Solutions(requestDto.getProblemId(), requestDto.getLanguage());
 
         if (!hasEnoughSolutions) {   // 크롤링 돼 있음 -> 크롤링
+
             // 크롤링 API 엔드포인트 호출
-            String crawlApiUrl = "http://fastapi_app:8000/api/scrape?problem_id=" + requestDto.getProblemId() + "&language_id=" + requestDto.getLanguage();
+            String crawlApiUrl = "http://fastapi_app:8000/api/scrape";
+
+            // 요청 바디 생성 (JSON 형식)
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("problem_id", requestDto.getProblemId());
+            requestBody.put("language_id", requestDto.getLanguage());
+
+            // WebClient 요청 보내기 (POST + JSON Body)
             String response = webClientBuilder.build()
-                    .get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path(crawlApiUrl)
-                            .queryParam("problemId", requestDto.getProblemId())
-                            .queryParam("language", requestDto.getLanguage())
-                            .build())
+                    .post() // ✅ POST 요청
+                    .uri(crawlApiUrl) // ✅ 직접 URL 지정
+                    .contentType(MediaType.APPLICATION_JSON) // ✅ JSON 데이터 전송
+                    .bodyValue(requestBody) // ✅ JSON 바디 설정
                     .retrieve()
                     .bodyToMono(String.class)
-                    .block(); // 동기적으로 결과 받음
+                    .block(); // 동기 요청 (필요하면 비동기로 변경 가능)
+
+            System.out.println("Response from FastAPI: " + response);
 
             if (response != null) {
                 return ResponseEntity.ok("Crawling triggered: " + response);
