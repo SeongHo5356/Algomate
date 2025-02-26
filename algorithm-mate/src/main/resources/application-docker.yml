@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url : jdbc:postgresql://algomate-db.crwmy48cc6rr.ap-southeast-2.rds.amazonaws.com:5432/algomate_db
-    username: algomate
-    password: algomate7897
+    url : ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,7 +13,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   web:
     resources:
-      static-locations: file:/app/resources/solutions/
+      static-locations: ${STATIC_LOCATIONS}
 
 springdoc:
   api-docs:
@@ -21,5 +21,9 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+
+solutions:
+  base-path: ${SOLUTIONS_BASE_PATH}
+
 fastapi:
-  base-url: "http://13.239.190.188"
+  base-url: ${FASTAPI_BASE_URL}

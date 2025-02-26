@@ -14,6 +14,8 @@ spring:
   web:
     resources:
       static-locations: file:/Users/sungho/Documents/study/Algomate/algorithm-mate/src/main/resources/solutions/
+  solutions:
+    base-path: src/main/resources/solutions
 
 springdoc:
   api-docs:
@@ -24,4 +26,5 @@ springdoc:
 fastapi:
   base-url: "http://13.239.190.188"  # FastAPI 서버 URL
 
-
+solutions:
+  base-path: src/main/resources/solutions

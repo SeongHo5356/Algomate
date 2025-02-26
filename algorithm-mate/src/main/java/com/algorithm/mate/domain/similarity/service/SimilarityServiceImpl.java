@@ -38,13 +38,15 @@ public class SimilarityServiceImpl implements SimilarityService2 {
     private final SubmissionService submissionService;
     private final SubmissionRepository submissionRepository;
     private final SolutionRepository solutionRepository;
+    private final SolutionFilePathResolver pathResolver;
 
     @Autowired
-    public SimilarityServiceImpl(SimilarityRepository similarityRepository, SubmissionService submissionService, SubmissionRepository submissionRepository, SolutionRepository solutionRepository) {
+    public SimilarityServiceImpl(SimilarityRepository similarityRepository, SubmissionService submissionService, SubmissionRepository submissionRepository, SolutionRepository solutionRepository, SolutionFilePathResolver pathResolver) {
         this.similarityRepository = similarityRepository;
         this.submissionService = submissionService;
         this.submissionRepository = submissionRepository;
         this.solutionRepository = solutionRepository;
+        this.pathResolver = pathResolver;
     }
 
     @Override
@@ -79,8 +81,9 @@ public class SimilarityServiceImpl implements SimilarityService2 {
     public void compareWithBaseFile(String bkId, String problemId, String language) throws CustomExitException {
         try {
             String fileExtension = submissionService.getFileExtension(language);
-            String baseFilePath = String.format("src/main/resources/solutions/%s/base/%s.%s", problemId, bkId, fileExtension);
-            String solutionsPath = String.format("src/main/resources/solutions/%s/%s", problemId, fileExtension);
+            // 환경 변수 기반 경로 사용
+            String baseFilePath = pathResolver.getBaseFilePath(problemId, bkId, fileExtension);
+            String solutionsPath = pathResolver.getSolutionsPath(problemId, fileExtension);
 
             log.info("현재 작업 디렉토리: " + new File("").getAbsolutePath());
             log.info("찾으려는 파일 절대 경로: " + new File(baseFilePath).getAbsolutePath());
@@ -206,7 +209,8 @@ public class SimilarityServiceImpl implements SimilarityService2 {
 
             // 상대 경로로 변환
             String relativePath = String.format("%d/py/%s", problemId, fileName);
-            Path absolutePath = Paths.get("/Users/sungho/Documents/study/Algomate/algorithm-mate/src/main/resources/solutions", relativePath);
+            Path absolutePath = Paths.get(pathResolver.getSolutionsBasePath(), relativePath);
+//            Path absolutePath = Paths.get("/Users/sungho/Documents/study/Algomate/algorithm-mate/src/main/resources/solutions", relativePath);
 
             // 파일 존재 여부 체크
             if (Files.exists(absolutePath)) {

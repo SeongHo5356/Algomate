@@ -6,6 +6,7 @@ import com.algorithm.mate.domain.similarity.service.SimilarityService2;
 import com.algorithm.mate.domain.solution.service.SolutionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,6 @@ public class SimilarityController2 {
 
     private WebClient.Builder webClientBuilder;
 
-    @Autowired
     public SimilarityController2(WebClient.Builder webClientBuilder) {
         this.webClientBuilder = webClientBuilder;
     }
@@ -45,12 +45,6 @@ public class SimilarityController2 {
 
         if (!hasEnoughSolutions) {   // 크롤링 돼 있음 -> 크롤링
 
-            // 크롤링 API 엔드포인트 호출
-            String crawlApiUrl = "http://crawling:8000/api/scrape";
-            System.out.println("crawlApiUrl: " + crawlApiUrl);
-            System.out.println("requestDto: " + requestDto.getProblemId());
-            System.out.println("language_id: " + requestDto.getLanguage());
-
             // 요청 바디 생성 (JSON 형식)
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("problem_id", requestDto.getProblemId());
@@ -63,7 +57,7 @@ public class SimilarityController2 {
             try {
                 String response = webClientBuilder.build()
                         .post()
-                        .uri("http://crawling:8000/api/scrape")
+                        .uri("/api/scrape")
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(requestBody)
                         .retrieve()
@@ -74,6 +68,7 @@ public class SimilarityController2 {
             } catch (Exception e) {
                 System.err.println("Error during API call: " + e.getMessage());
                 e.printStackTrace();
+                throw e;
             }
 
             String response = "1";
@@ -81,7 +76,7 @@ public class SimilarityController2 {
             System.out.println("Response from FastAPI: " + response);
 
             if (response != null) {
-                return ResponseEntity.ok("Crawling triggered: " + response);
+                System.out.println("Crawling triggered: " + response);
             } else {
                 return ResponseEntity.status(500).body("Crawling failed: No response from FastAPI");
             }
