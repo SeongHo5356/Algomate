@@ -1,5 +1,4 @@
 spring:
-  profiles: docker
   datasource:
     url : ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
