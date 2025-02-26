@@ -16,11 +16,14 @@ spring:
     resources:
       static-locations: ${STATIC_LOCATIONS}
 
+  solutions:
+    base-path: ${SOLUTIONS_BASE_PATH}
+
+  fastapi:
+    base-url: ${FASTAPI_BASE_URL}
+
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     path: /swagger-ui.html
-
-fastapi:
-  base-url: ${FASTAPI_BASE_URL}
