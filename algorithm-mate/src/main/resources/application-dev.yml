@@ -26,4 +26,5 @@ springdoc:
 fastapi:
   base-url: "http://13.239.190.188"  # FastAPI 서버 URL
 
-
+solutions:
+  base-path: src/main/resources/solutions
