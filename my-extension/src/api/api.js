@@ -1,6 +1,6 @@
 // src/api/api.js
 export async function sendProblemData(problemId, pageContent, userId) {
-    const response = await fetch('http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/v1/problemData/submit-data', {
+    const response = await fetch('http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/api/v1/problemData/submit-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -13,7 +13,7 @@ export async function sendProblemData(problemId, pageContent, userId) {
 }
 
 export async function submitCode(problemId, bkId, codeContent, userId, language) {
-    const response = await fetch('http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/v1/submission/submit-code', {
+    const response = await fetch('http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/api/v1/submission/submit-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -28,7 +28,7 @@ export async function submitCode(problemId, bkId, codeContent, userId, language)
 }
 
 export async function requestSimilarityCalculate(bkId, problemId, language) {
-    const response = await fetch('http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/v2/similarity/compare', {
+    const response = await fetch('http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/api/v2/similarity/compare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -42,7 +42,7 @@ export async function requestSimilarityCalculate(bkId, problemId, language) {
 
 export async function fetchSimilarCodeUrls(submissionId) {
     try {
-        const response = await fetch(`http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/v2/similarity/select5?bkId=${submissionId}`, {
+        const response = await fetch(`http://ec2-13-239-190-188.ap-southeast-2.compute.amazonaws.com:8080/api/api/v2/similarity/select5?bkId=${submissionId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -51,7 +51,7 @@ export async function fetchSimilarCodeUrls(submissionId) {
         }
         const result = await response.json();
         // 파일 경로를 올바른 URL로 변환
-        return result.map(filePath => `http://localhost:8080/${filePath}`);
+        return result.map(filePath => `http://spring-boot:8080/${filePath}`);
     } catch (error) {
         console.error('fetchSimilarCodeUrls error:', error);
         return [];
