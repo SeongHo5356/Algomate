@@ -48,7 +48,6 @@ def get_solution_links(driver, base_url, page=1):
     driver.get(base_url + str(page))
     print("‼️ 해당 페이지에서 코드 링크 모음")
     print(driver.current_url)
-    print(driver.page_source)
     time.sleep(1)  # 과도한 요청 방지
 
     try:
@@ -97,7 +96,6 @@ def scrape_solutions(driver, problem_id, language_id):
     print("‼️ base_url에 접속해서 크롤링 중")
     print(base_url)
     print(driver.current_url)
-    print(driver.page_source)
     solutions = []  # 메모리 내 리스트
 
     for page in range(1, 2):  # 현재 1페이지만 크롤링

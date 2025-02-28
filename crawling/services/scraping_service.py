@@ -26,7 +26,7 @@ class ScrapingService:
     @staticmethod
     def scrapeWhenServerNotSolved(driver, problem_id, language_id):
         """ ✅ 맞춘 적 없는 문제일 때  -> 제출 -> 크롤링 """
-        from scraping.ScarpeAnswers import scrape_solutions, save_solution_to_file, send_solution_to_api
+        from scraping.ScarpeAnswers import scrape_solutions, send_solution_to_api
 
         load_dotenv()
 
@@ -79,6 +79,11 @@ class ScrapingService:
     @staticmethod
     def fullScrapeProcess(driver, problem_id, language_id):
         solvedStatus = check_problem_solved(problem_id)
+
+        if problem_id == 'Python':
+            problem_id = 1003
+        elif problem_id == 'Java':
+            problem_id = 1002
 
         if solvedStatus:
             print("✅ 해당 문제 푼적 있음")
