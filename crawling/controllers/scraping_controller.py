@@ -16,6 +16,7 @@ async def start_scraping(request: ScrapeRequest):
     ✅ 크롤링을 Celery 비동기 작업으로 실행
     """
     task = scrape_baekjoon.delay(request.problem_id, request.language_id)  # ✅ 비동기 실행
+    print("크롤링 작업 요청됨 : problem_id, language_id ",request.problem_id," ", request.language_id)
     return {"message": "✅ 크롤링 작업이 시작되었습니다.", "task_id": task.id}
 
 

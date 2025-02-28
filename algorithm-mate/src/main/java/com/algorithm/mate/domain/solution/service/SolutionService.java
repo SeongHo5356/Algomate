@@ -17,7 +17,7 @@ import java.util.List;
 public class SolutionService {
 
     //파일 저장 경로
-    private static final String BASE_PATH = "src/main/resources/";
+    private static final String BASE_PATH = "resources/";
 
     private final SolutionRepository solutionRepository;
 

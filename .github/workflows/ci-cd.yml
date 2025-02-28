@@ -2,7 +2,7 @@ name: CI/CD for Algomate
 
 on:
   push:
-    branches: [dev, refactor/#30]
+    branches: [dev, fix/#34]
     paths:
       - 'crawling/**'
       - 'algorithm-mate/**'
