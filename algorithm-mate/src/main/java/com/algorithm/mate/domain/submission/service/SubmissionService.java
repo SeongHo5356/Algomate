@@ -12,7 +12,7 @@ import java.io.IOException;
 public class SubmissionService {
 
     //파일 저장 경로
-    private static final String BASE_PATH = "resources/";
+    private static final String BASE_PATH = "resources/solutions";
 
     private final SubmissionRepository submissionRepository;
 
