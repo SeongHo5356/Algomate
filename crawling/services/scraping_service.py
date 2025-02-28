@@ -80,10 +80,10 @@ class ScrapingService:
     def fullScrapeProcess(driver, problem_id, language_id):
         solvedStatus = check_problem_solved(problem_id)
 
-        if problem_id == 'Python':
-            problem_id = 1003
-        elif problem_id == 'Java':
-            problem_id = 1002
+        if language_id == 'Python':
+            language_id = 1003
+        elif language_id == 'Java':
+            language_id = 1002
 
         if solvedStatus:
             print("✅ 해당 문제 푼적 있음")
