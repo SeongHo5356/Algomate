@@ -41,4 +41,13 @@ public class Submission {
         this.code = code;
         this.createdAt = LocalDateTime.now();
     }
+
+    // 업데이트 의도를 명확하게 표현하는 도메인 메서드
+    public void updateSubmission(String problemId, String language, String userId, String code) {
+        this.problemId = problemId;
+        this.language = language;
+        this.userId = userId;
+        this.code = code;
+        this.createdAt = LocalDateTime.now();
+    }
 }

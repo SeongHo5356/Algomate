@@ -28,11 +28,12 @@ public class SubmissionService {
         if (existingSubmission != null) {
             System.out.println("존재하는 것");
             // 기존 데이터 업데이트
-            existingSubmission.setProblemId(submission.getProblemId());
-            existingSubmission.setLanguage(submission.getLanguage());
-            existingSubmission.setUserId(submission.getUserId());
-            existingSubmission.setCode(submission.getCode());
-            existingSubmission.setCreatedAt(submission.getCreatedAt());
+            existingSubmission.updateSubmission(
+                    submission.getProblemId(),
+                    submission.getLanguage(),
+                    submission.getUserId(),
+                    submission.getCode()
+            );
             return saveSubmission(existingSubmission);
         } else {
             // 새 데이터 삽입
