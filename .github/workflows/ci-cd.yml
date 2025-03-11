@@ -54,7 +54,7 @@ jobs:
             # .env 파일 동적으로 생성
             chmod 600 .env
             docker-compose down
-            sed -i "s|image: .*crawling|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
+            sed -i "s|image: .*crawling$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
             sed -i "s|image: .*celery_worker$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
             sed -i "s|image: .*spring-boot$|image: ${{ secrets.DOCKER_USERNAME }}/algomate:${{ github.sha }}|g" docker-compose.yml
             sed -i "s|image: .*nginx$|image: ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.sha }}|g" docker-compose.yml
