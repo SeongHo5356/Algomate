@@ -14,8 +14,6 @@ spring:
   web:
     resources:
       static-locations: file:/Users/sungho/Documents/study/Algomate/algorithm-mate/src/main/resources/solutions/
-  solutions:
-    base-path: src/main/resources/solutions
 
 springdoc:
   api-docs:
@@ -28,3 +26,5 @@ fastapi:
 
 solutions:
   base-path: src/main/resources/solutions
+
+
