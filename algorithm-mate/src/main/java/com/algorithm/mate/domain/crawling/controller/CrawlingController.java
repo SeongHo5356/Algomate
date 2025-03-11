@@ -1,5 +1,6 @@
 package com.algorithm.mate.domain.crawling.controller;
 
+import com.algorithm.mate.domain.crawling.infrastructure.WebClientService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,22 +14,16 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/crawling")
 public class CrawlingController {
 
-    private final WebClient webClient;
+    private final WebClientService webClientService;
 
-    public CrawlingController(WebClient.Builder webClientBuilder,
-                              @Value("${fastapi.base-url}") String fastApiBaseUrl) {
-        this.webClient = webClientBuilder.baseUrl(fastApiBaseUrl).build();
+    public CrawlingController(WebClientService webClientService) {
+        this.webClientService = webClientService;
     }
-
     @GetMapping("/task-status/{taskId}")
     public Mono<ResponseEntity<String>> getTaskStatus(@PathVariable("taskId") String taskId) {
-        return webClient.get()
-                .uri("/api/task-status/{taskId}", taskId)
-                .retrieve()
-                .bodyToMono(String.class)
+        return webClientService.getTaskStatus(taskId)
                 .map(ResponseEntity::ok)
-                .onErrorResume(e
-                        -> Mono.just(ResponseEntity.status(502)
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(502)
                         .body("FastAPI 서버 응답 실패: " + e.getMessage())));
     }
 
