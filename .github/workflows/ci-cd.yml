@@ -54,14 +54,14 @@ jobs:
             # .env 파일 동적으로 생성
             chmod 600 .env
             docker-compose down
-            sed -i "s|image: .*fastapi_app$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
+            sed -i "s|image: .*crawling|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
             sed -i "s|image: .*celery_worker$|image: ${{ secrets.DOCKER_USERNAME }}/crawling:${{ github.sha }}|g" docker-compose.yml
             sed -i "s|image: .*spring-boot$|image: ${{ secrets.DOCKER_USERNAME }}/algomate:${{ github.sha }}|g" docker-compose.yml
             sed -i "s|image: .*nginx$|image: ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.sha }}|g" docker-compose.yml
             docker-compose pull
             docker-compose up -d --remove-orphans
             docker-compose ps
-            docker logs fastapi_app
+            docker logs crawling
             docker logs celery_worker
             docker logs spring-boot
             docker logs nginx
