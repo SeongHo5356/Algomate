@@ -61,7 +61,3 @@ jobs:
             docker-compose pull
             docker-compose up -d --remove-orphans
             docker-compose ps
-            docker logs crawling
-            docker logs celery_worker
-            docker logs spring-boot
-            docker logs nginx
