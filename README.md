@@ -12,7 +12,6 @@
 <b>이 문제를 해결하기 위해 내가 제출한 코드와 유사하게 풀어나간 정답코드를 유사도분석을 통해 추천하는 서비스를 기획하였습니다.</b><br><br>
 
 # ⚙️ 서비스 아키텍처
-![image](https://github.com/user-attachments/assets/dd28ecf1-220d-496c-8bb1-d5da7bf37dbe)
 ![image](https://github.com/user-attachments/assets/c7916cae-3ef8-4c17-b68f-5564f6fc8f9b)
 ![image](https://github.com/user-attachments/assets/7abc6f4a-5e8b-4780-9168-e174841e6bd3)
 
